@@ -4,8 +4,6 @@
 //
 using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 
 namespace Trinity.Utilities
 {
@@ -35,7 +33,7 @@ namespace Trinity.Utilities
     {
         public static void DisplayByteArray(byte[] bytes)
         {
-            for (int i = 0; i < bytes.Length; )
+            for (int i = 0; i < bytes.Length;)
             {
                 for (int j = 0; j < 8; j++)
                 {

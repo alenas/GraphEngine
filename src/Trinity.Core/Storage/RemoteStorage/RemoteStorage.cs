@@ -3,26 +3,17 @@
 // Licensed under the MIT license. See LICENSE.md file in the project root for full license information.
 //
 using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Net;
-using System.Threading;
-
-using Trinity;
-using Trinity.Network;
-using Trinity.Utilities;
-using Trinity.Diagnostics;
-using Trinity.Win32;
-using Trinity.Core.Lib;
-using Trinity.Daemon;
-using Trinity.Network.Messaging;
-using Trinity.FaultTolerance;
-using System.Threading.Tasks;
-using System.Runtime.ExceptionServices;
 using System.Collections.Concurrent;
-using Trinity.Network.Client;
+using System.Collections.Generic;
+using System.Runtime.ExceptionServices;
+using System.Threading;
+using System.Threading.Tasks;
+
 using Trinity.Configuration;
+using Trinity.Daemon;
+using Trinity.Diagnostics;
+using Trinity.Network;
+using Trinity.Network.Client;
 
 namespace Trinity.Storage
 {
@@ -62,7 +53,7 @@ namespace Trinity.Storage
             {
                 for (int k = 0; k < connPerServer; k++) // make different server connections interleaved 
                 {
-                    foreach(var s in servers)
+                    foreach (var s in servers)
                     {
                         Connect(s);
                     }
@@ -77,8 +68,7 @@ namespace Trinity.Storage
 
             if (!nonblocking)
             {
-                try { connect_async_task.Wait(); }
-                catch (AggregateException ex) { ExceptionDispatchInfo.Capture(ex.InnerException).Throw(); }
+                try { connect_async_task.Wait(); } catch (AggregateException ex) { ExceptionDispatchInfo.Capture(ex.InnerException).Throw(); }
             }
         }
 
@@ -97,8 +87,7 @@ namespace Trinity.Storage
                         m_connected = true;
                         break;
                     }
-                }
-                catch (Exception ex)
+                } catch (Exception ex)
                 {
                     Log.WriteLine(LogLevel.Debug, "RemoteStorage: Cannot connect to {0}:{1}: {2}", server_info.HostName, server_info.Port, ex.Message);
                     Thread.Sleep(100);
@@ -119,8 +108,7 @@ namespace Trinity.Storage
                     m_connected = true;
                     m_memorycloud.ReportServerConnectedEvent(this);
                 }
-            }
-            else
+            } else
             {
                 if (m_connected)
                 {

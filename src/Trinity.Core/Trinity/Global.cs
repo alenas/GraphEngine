@@ -4,24 +4,18 @@
 //
 using System;
 using System.Collections.Generic;
-using System.Threading;
-using System.Text;
-using System.Net;
-using System.IO;
 using System.Diagnostics;
-using System.Reflection;
 using System.Linq;
+using System.Net;
+using System.Reflection;
+using System.Runtime.InteropServices;
 
-using Trinity;
-using Trinity.Daemon;
+using Trinity.Configuration;
+using Trinity.Diagnostics;
+using Trinity.Extension;
 using Trinity.Network;
 using Trinity.Storage;
 using Trinity.Utilities;
-using Trinity.Diagnostics;
-using System.Runtime.CompilerServices;
-using Trinity.Extension;
-using Trinity.Configuration;
-using System.Runtime.InteropServices;
 
 namespace Trinity
 {
@@ -101,7 +95,7 @@ namespace Trinity
             }
 
             generic_cell_ops = genericCellOps;
-            storage_schema   = storageSchema;
+            storage_schema = storageSchema;
         }
 
         private static Tuple<IGenericCellOperations, IStorageSchema, int> _LoadTSLStorageExtension(Assembly extension_assembly)
@@ -128,14 +122,13 @@ namespace Trinity
 
                 if (pdict.TryGetValue(provider_type, out var provider_priority)) priority = provider_priority;
                 if (pdict.TryGetValue(schema_type, out var schema_priority)) priority = schema_priority;
-            }
-            catch
+            } catch
             {
                 _generic_cell_ops = null;
                 _storage_schema = null;
             }
 
-_return:
+        _return:
 
             return Tuple.Create(_generic_cell_ops, _storage_schema, priority);
         }
@@ -152,8 +145,7 @@ _return:
                 {
                     Log.WriteLine(LogLevel.Debug, $"Executing startup task {task.GetType().FullName}");
                     task.Run();
-                }
-                catch (Exception ex)
+                } catch (Exception ex)
                 {
                     Log.WriteLine(LogLevel.Error, "An error occured while executing a startup task: {0}", ex.ToString());
                     all_good = false;
@@ -180,8 +172,7 @@ _return:
                 Log.WriteLine(LogLevel.Info, "No TSL storage extension loaded.");
                 _RegisterTSLStorageExtension(new DefaultGenericCellOperations(), new DefaultStorageSchema());
                 return TrinityErrorCode.E_FAILURE;
-            }
-            else
+            } else
             {
                 Log.WriteLine(LogLevel.Info, "TSL storage extension loaded.");
                 _RegisterTSLStorageExtension(loaded_tuple.Item1, loaded_tuple.Item2);
@@ -195,7 +186,7 @@ _return:
             Log.WriteLine(LogLevel.Info, "Scanning for MemoryCloud extensions.");
             new_memorycloud_func = () => new FixedMemoryCloud();
 
-            if(!AssemblyUtility.GetAllClassTypes<MemoryCloud>().Any(t => t != typeof(FixedMemoryCloud)))
+            if (!AssemblyUtility.GetAllClassTypes<MemoryCloud>().Any(t => t != typeof(FixedMemoryCloud)))
             {
                 Log.WriteLine(LogLevel.Info, "No MemoryCloud extension found.");
                 return TrinityErrorCode.E_FAILURE;
@@ -206,7 +197,7 @@ _return:
                 var mc_ext_rank = ExtensionConfig.Instance.ResolveTypePriorities();
                 Func<Type, int> mc_rank_func = t =>
                 {
-                    if(mc_ext_rank.TryGetValue(t, out var r)) return r;
+                    if (mc_ext_rank.TryGetValue(t, out var r)) return r;
                     else return 0;
                 };
                 var memcloud_types = AssemblyUtility.GetAllClassTypes<MemoryCloud>().OrderByDescending(mc_rank_func);
@@ -224,8 +215,7 @@ _return:
                         var mc = ctor.Invoke(new object[] { }) as MemoryCloud;
                         Log.WriteLine(LogLevel.Info, "MemoryCloud extension '{0}' loaded.", mc_type.Name);
                         return mc;
-                    }
-                    catch (Exception ex)
+                    } catch (Exception ex)
                     {
                         Log.WriteLine(LogLevel.Error, "Exception thrown while loading MemoryCloud extension '{0}': {1}.", mc_type.Name, ex.ToString());
                         continue;

@@ -22,16 +22,22 @@ FUNCTION(POSTBUILD_COPY_OUTPUT target file)
 
     SET(dir ${CMAKE_LIBRARY_OUTPUT_DIRECTORY})
     IF(_PB_ARCHIVE)
+        MESSAGE("ARCHIVE")
         SET(dir ${CMAKE_ARCHIVE_OUTPUT_DIRECTORY})
     ELSEIF(_PB_RUNTIME)
+        MESSAGE("Runtime")
         SET(dir ${CMAKE_RUNTIME_OUTPUT_DIRECTORY})
     ELSEIF(_PB_LIBRARY)
+        MESSAGE("Library")
         SET(dir ${CMAKE_LIBRARY_OUTPUT_DIRECTORY})
     ENDIF()
 
     IF(NOT dir)
+        message("Binary")
         SET(dir ${CMAKE_BINARY_DIR})
     ENDIF()
+
+    MESSAGE("====== COPY_OUTPUT >> ${target} > ${dir}")
 
     ADD_CUSTOM_COMMAND(
         TARGET ${target}
@@ -47,6 +53,7 @@ FUNCTION(POSTBUILD_XPLAT_OUTPUT target xplat_dir)
     # for windows builds, always output dlls to bin/ path.
     # this makes it easier to load them at runtime.
     IF(target_type STREQUAL "EXECUTABLE")
+        MESSAGE("=== XPLAT > EXECUTABLE > ${xplat_dir}")
 
         INSTALL(TARGETS ${target} RUNTIME DESTINATION bin)
         IF(UNIX)
@@ -57,6 +64,7 @@ FUNCTION(POSTBUILD_XPLAT_OUTPUT target xplat_dir)
         ENDIF()
 
     ELSEIF(target_type STREQUAL "SHARED_LIBRARY")
+        MESSAGE("=== XPLAT > LIBRARY")
 
         IF(UNIX)
             POSTBUILD_COPY_OUTPUT(${target} "${xplat_dir}/${target}.dll" LIBRARY)
@@ -70,9 +78,6 @@ FUNCTION(POSTBUILD_XPLAT_OUTPUT target xplat_dir)
 
     ELSE()
         MESSAGE(ERROR "Unsupported target type")
-    ENDIF()
-
-    IF(WIN32)
     ENDIF()
 
 ENDFUNCTION()

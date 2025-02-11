@@ -3,10 +3,6 @@
 // Licensed under the MIT license. See LICENSE.md file in the project root for full license information.
 //
 using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Trinity.Network.Messaging
 {
@@ -36,7 +32,7 @@ namespace Trinity.Network.Messaging
         {
             this.Buffer = reqArgs.Buffer;
             this.Offset = reqArgs.Offset;
-            this.Size   = reqArgs.Size;
+            this.Size = reqArgs.Size;
             this.ExceptionObject = exception;
         }
 
@@ -44,7 +40,7 @@ namespace Trinity.Network.Messaging
         {
             this.Buffer = reqArgs.Buffer;
             this.Offset = reqArgs.Offset;
-            this.Size   = reqArgs.Size;
+            this.Size = reqArgs.Size;
             this.ExceptionObject = exception;
         }
 
@@ -52,7 +48,7 @@ namespace Trinity.Network.Messaging
         {
             this.Buffer = reqArgs.Buffer;
             this.Offset = reqArgs.Offset;
-            this.Size   = reqArgs.Size;
+            this.Size = reqArgs.Size;
             this.ExceptionObject = exception;
         }
 
@@ -60,7 +56,7 @@ namespace Trinity.Network.Messaging
         {
             this.Buffer = reqArgs.Buffer;
             this.Offset = reqArgs.Offset;
-            this.Size   = reqArgs.Size;
+            this.Size = reqArgs.Size;
             this.ExceptionObject = exception;
         }
     }

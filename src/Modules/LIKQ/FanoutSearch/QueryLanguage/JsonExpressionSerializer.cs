@@ -1,6 +1,6 @@
 using FanoutSearch;
 using Serialize.Linq.Factories;
-using Serialize.Linq.Serializers;
+using LSR=Serialize.Linq.Serializers;
 using Serialize.Linq.Extensions;
 using Serialize.Linq.Nodes;
 using System;
@@ -10,12 +10,12 @@ namespace FanoutSearch
 {
     class JsonExpressionSerializer : IExpressionSerializer
     {
-        private JsonSerializer m_serializer = null;
+        private LSR.JsonSerializer m_serializer = null;
         private NodeFactory m_factory = null;
 
         public JsonExpressionSerializer()
         {
-            m_serializer = new JsonSerializer();
+            m_serializer = new LSR.JsonSerializer();
             m_serializer.AddKnownType(typeof(FanoutSearch.Action));
             m_factory = new NodeFactory(new FactorySettings { });
         }

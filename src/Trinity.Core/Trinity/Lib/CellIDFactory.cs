@@ -7,14 +7,13 @@ using System;
 using System.Runtime.ConstrainedExecution;
 #endif
 using System.Threading;
-using System.Runtime;
 
 namespace Trinity.Core.Lib
 {
 #pragma warning disable 0420
     class XRandom : Random
     {
-#region spin lock
+        #region spin lock
         private volatile int spinlock = 0;
 
         private void GetLock()
@@ -37,7 +36,7 @@ namespace Trinity.Core.Lib
         {
             spinlock = 0;
         }
-#endregion
+        #endregion
 
         public XRandom() : base() { }
         public XRandom(int seed) : base(seed) { }
@@ -47,9 +46,9 @@ namespace Trinity.Core.Lib
         }
 
         public unsafe
-        #if TFM_NET60
+#if TFM_NET60
         new
-        #endif
+#endif
         long NextInt64()
         {
             byte[] bytes = new byte[8];

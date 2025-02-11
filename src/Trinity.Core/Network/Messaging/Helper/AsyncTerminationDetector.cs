@@ -3,11 +3,7 @@
 // Licensed under the MIT license. See LICENSE.md file in the project root for full license information.
 //
 using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 using System.Threading;
-using Trinity;
 using System.Threading.Tasks;
 
 namespace Trinity.Network.Messaging
@@ -31,8 +27,7 @@ namespace Trinity.Network.Messaging
                     Counter = 0//for the ignition message
                 };
                 HoldingToken = 1;
-            }
-            else
+            } else
             {
                 HoldingToken = 0;
             }
@@ -63,7 +58,7 @@ namespace Trinity.Network.Messaging
             {
                 Interlocked.Increment(ref PendingMessageCount);
                 Interlocked.Decrement(ref LocalCounter);
-                Thread.VolatileWrite(ref LocalColor, (int)ATDColor.Black);
+                Volatile.Write(ref LocalColor, (int)ATDColor.Black);
             }
         }
         public void ReceivingMessage(int count)
@@ -72,7 +67,7 @@ namespace Trinity.Network.Messaging
             {
                 Interlocked.Add(ref PendingMessageCount, count);
                 Interlocked.Add(ref LocalCounter, -count);
-                Thread.VolatileWrite(ref LocalColor, (int)ATDColor.Black);
+                Volatile.Write(ref LocalColor, (int)ATDColor.Black);
             }
         }
         public void MessageProcessComplete()
@@ -109,18 +104,16 @@ namespace Trinity.Network.Messaging
                     LocalColor == (int)ATDColor.White)
                 {
                     Console.WriteLine("Terminating...");
-                    if(Terminated != null)
+                    if (Terminated != null)
                         Terminated();
                     return;
-                }
-                else
+                } else
                 {
                     MyToken.Counter = 0;
                     MyToken.Color = (int)ATDColor.White;
                     LocalColor = (int)ATDColor.White;
                 }
-            }
-            else
+            } else
             {
                 MyToken.Counter += LocalCounter;
                 if (LocalColor == (int)ATDColor.Black)
@@ -129,8 +122,8 @@ namespace Trinity.Network.Messaging
                 }
                 LocalColor = (int)ATDColor.White;
             }
-            Thread.VolatileWrite(ref HoldingToken , 0);
-            if(SendDetectionTokenCallBack != null)
+            Volatile.Write(ref HoldingToken, 0);
+            if (SendDetectionTokenCallBack != null)
                 SendDetectionTokenCallBack(MyToken);
         }
         public void ReceiveToken(DetectionToken token)
@@ -139,14 +132,13 @@ namespace Trinity.Network.Messaging
             lock (TokenLocker)
             {
                 Console.WriteLine("Lock acquired.");
-                Thread.VolatileWrite(ref HoldingToken, 1);
+                Volatile.Write(ref HoldingToken, 1);
                 MyToken = token;
-                if (Thread.VolatileRead(ref PendingMessageCount) == 0)
+                if (Volatile.Read(ref PendingMessageCount) == 0)
                 {
                     Task.Factory.StartNew(() =>
                     ProcessToken());
-                }
-                else
+                } else
                 {
                     Console.WriteLine("Still busy, pending message count = {0}", PendingMessageCount);
                 }
@@ -168,7 +160,7 @@ namespace Trinity.Network.Messaging
 
     internal struct DetectionToken
     {
-        public int Counter ;
-        public int Color ;
+        public int Counter;
+        public int Color;
     }
 }

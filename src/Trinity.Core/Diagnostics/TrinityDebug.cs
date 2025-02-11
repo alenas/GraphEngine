@@ -5,13 +5,7 @@
 #define DEBUG_ON
 
 using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 using System.Threading;
-using System.IO;
-using Trinity.Diagnostics;
-using System.Diagnostics;
 namespace Trinity.Diagnostics
 {
     internal class TrinityDebug

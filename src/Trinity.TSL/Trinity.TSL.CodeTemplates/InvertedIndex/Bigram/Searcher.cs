@@ -76,7 +76,7 @@ namespace t_Namespace.InvertedIndex
 
             using (FileStream fs = new FileStream(bg_index_file, FileMode.Open, FileAccess.Read, FileShare.Read, 1 << 10, false))
             {
-                fs.Read(buffer, 0, buffer.Length);
+                fs.ReadExactly(buffer, 0, buffer.Length);
             }
 
             bg_index = new long[65536];
@@ -122,7 +122,7 @@ namespace t_Namespace.InvertedIndex
                         }
                         else
                         {
-                            fs.Read(reading_buffer, 0, (int)index_len);
+                            fs.ReadExactly(reading_buffer, 0, (int)index_len);
                             Memory.Copy(reading_buffer, IndexBufferPointer + p, (int)index_len);
                             index_len = 0;
                         }

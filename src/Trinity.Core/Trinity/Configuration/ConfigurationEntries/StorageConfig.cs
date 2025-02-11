@@ -3,12 +3,8 @@
 // Licensed under the MIT license. See LICENSE.md file in the project root for full license information.
 //
 using System;
-using System.Collections.Generic;
 using System.IO;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using Trinity.Core.Lib;
+
 using Trinity.Diagnostics;
 using Trinity.Storage;
 using Trinity.Utilities;
@@ -24,11 +20,11 @@ namespace Trinity.Configuration
         static StorageConfig s_StorageConfig = new StorageConfig();
         private StorageConfig()
         {
-            StorageRoot     = DefaultStorageRoot;
-            TrunkCount      = c_MaxTrunkCount;
-            ReadOnly        = c_DefaultReadOnly;
+            StorageRoot = DefaultStorageRoot;
+            TrunkCount = c_MaxTrunkCount;
+            ReadOnly = c_DefaultReadOnly;
             StorageCapacity = c_DefaultStorageCapacityProfile;
-            DefragInterval  = c_DefaultDefragInterval;
+            DefragInterval = c_DefaultDefragInterval;
         }
         /// <summary>
         /// Gets the configuration entry singleton instance.
@@ -54,15 +50,15 @@ namespace Trinity.Configuration
         #endregion
 
         #region Fields
-        internal const int    c_MaxTrunkCount = ConfigurationConstants.Values.MAX_TRUNK_COUNT;
-        internal const bool   c_DefaultReadOnly = ConfigurationConstants.Values.DEFAULT_VALUE_FALSE;
-        public const ushort   c_UndefinedCellType = ConfigurationConstants.Values.UNDEFINED_CELL_TYPE;
-        internal const int    c_DefaultDefragInterval = ConfigurationConstants.Values.DEFAULT_DEFRAG_INTERVAL;
-        internal const StorageCapacityProfile 
+        internal const int c_MaxTrunkCount = ConfigurationConstants.Values.MAX_TRUNK_COUNT;
+        internal const bool c_DefaultReadOnly = ConfigurationConstants.Values.DEFAULT_VALUE_FALSE;
+        public const ushort c_UndefinedCellType = ConfigurationConstants.Values.UNDEFINED_CELL_TYPE;
+        internal const int c_DefaultDefragInterval = ConfigurationConstants.Values.DEFAULT_DEFRAG_INTERVAL;
+        internal const StorageCapacityProfile
                               c_DefaultStorageCapacityProfile = StorageCapacityProfile.Max8G;
-        internal int          m_GCParallelism = ConfigurationConstants.Values.DEFALUT_GC_PATRALLELISM;
-        internal int          m_DefragInterval;
-        private  string       m_StorageRoot = ConfigurationConstants.Values.BLANK;
+        internal int m_GCParallelism = ConfigurationConstants.Values.DEFALUT_GC_PATRALLELISM;
+        internal int m_DefragInterval;
+        private string m_StorageRoot = ConfigurationConstants.Values.BLANK;
         #endregion
 
         #region Properties
@@ -169,8 +165,7 @@ namespace Trinity.Configuration
                 if (value >= 0xFFFFFF)
                 {
                     ThrowLargeObjectThresholdException();
-                }
-                else
+                } else
                 {
                     CTrinityConfig.CSetLargeObjectThreshold(value);
                 }

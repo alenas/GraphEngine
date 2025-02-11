@@ -8,11 +8,10 @@ using System.Globalization;
 using System.IO;
 using System.Linq;
 using System.Net;
-using System.Runtime.CompilerServices;
-using System.Text;
+using System.Net.Http;
 using System.Threading;
 using System.Threading.Tasks;
-using Trinity.Configuration;
+
 using Trinity.Diagnostics;
 using Trinity.TSL.Lib;
 
@@ -29,11 +28,11 @@ namespace Trinity.Network.Http
     /// </summary>
     public class TrinityHttpServer : IDisposable
     {
-        private HttpListener m_HttpServer                   = null;
-        private HttpHandler  m_HttpHandler                  = null;
+        private HttpListener m_HttpServer = null;
+        private HttpHandler m_HttpHandler = null;
         private List<AvailabilityGroup> m_RelayInstanceList = null;
-        private List<int>    m_RelayRoundRobinTable         = null;
-        private bool         m_AllowCrossDomainRequest      = true;
+        private List<int> m_RelayRoundRobinTable = null;
+        private bool m_AllowCrossDomainRequest = true;
 
         /// <summary>
         /// Initializes a new instance of Trinity HTTP server with the specified <see cref="T:Trinity.Network.Http.HttpListener"/> and service endpoints.
@@ -43,7 +42,7 @@ namespace Trinity.Network.Http
         public TrinityHttpServer(HttpHandler primaryHandler, List<string> serviceEndpoints)
         {
             m_HttpHandler = primaryHandler;
-            m_HttpServer  = new HttpListener();
+            m_HttpServer = new HttpListener();
             foreach (var prefix in serviceEndpoints)
             {
                 m_HttpServer.Prefixes.Add(prefix);
@@ -93,8 +92,7 @@ namespace Trinity.Network.Http
                             ProcessHttpRequest(context as HttpListenerContext);
                         }, m_HttpServer.GetContext());
                     }
-                }
-                catch (Exception) { }
+                } catch (Exception) { }
             });
         }
 
@@ -114,32 +112,26 @@ namespace Trinity.Network.Http
                 }
 
                 m_HttpHandler(ctx);
-            }
-            catch (BadRequestException ex)
+            } catch (BadRequestException ex)
             {
                 WriteResponseForBadRequest(ex, ctx);
-                try { Log.WriteLine(LogLevel.Warning, "Bad http request: " + ex.Code + ": " + ex.ToString()); }
-                catch { }
-            }
-            catch (Exception ex)
+                try { Log.WriteLine(LogLevel.Warning, "Bad http request: " + ex.Code + ": " + ex.ToString()); } catch { }
+            } catch (Exception ex)
             {
                 WriteResponseForInternalServerError(ctx);
-                try { Log.WriteLine(LogLevel.Error, ex.ToString()); }
-                catch { }
-            }
-            finally
+                try { Log.WriteLine(LogLevel.Error, ex.ToString()); } catch { }
+            } finally
             {
                 try
                 {
                     ctx.Response.OutputStream.Close();
-                }
-                catch (Exception) { }
+                } catch (Exception) { }
             }
         }
 
-        private void WriteResponseForInternalServerError(HttpListenerContext ctx)
+        private static void WriteResponseForInternalServerError(HttpListenerContext ctx)
         {
-            ctx.Response.StatusCode  = (int)HttpStatusCode.InternalServerError;
+            ctx.Response.StatusCode = (int)HttpStatusCode.InternalServerError;
             using (var writer = new StreamWriter(ctx.Response.OutputStream))
             {
                 writer.Write(@"{
@@ -151,9 +143,9 @@ namespace Trinity.Network.Http
             }
         }
 
-        private void WriteResponseForBadRequest(BadRequestException ex, HttpListenerContext ctx)
+        private static void WriteResponseForBadRequest(BadRequestException ex, HttpListenerContext ctx)
         {
-            ctx.Response.StatusCode  = (int)HttpStatusCode.BadRequest;
+            ctx.Response.StatusCode = (int)HttpStatusCode.BadRequest;
             using (var writer = new StreamWriter(ctx.Response.OutputStream))
             {
                 writer.Write(@"{
@@ -165,31 +157,34 @@ namespace Trinity.Network.Http
             }
         }
 
-        private static void _RelayRequest(HttpListenerContext context, AvailabilityGroup ag, int idx)
+        private static async Task _RelayRequest(HttpListenerContext context, AvailabilityGroup ag, int idx)
         {
-            ServerInfo        s          = ag.Instances[idx];
-            int               port       = context.Request.LocalEndPoint.Port;
-            string            requestUrl = context.Request.RawUrl;
+            ServerInfo s = ag.Instances[idx];
+            int port = context.Request.LocalEndPoint.Port;
+            string requestUrl = context.Request.RawUrl;
 
             if (requestUrl == String.Empty || !requestUrl.StartsWith("/", StringComparison.Ordinal))
                 requestUrl = requestUrl + "/";
 
             requestUrl = requestUrl.Substring(requestUrl.IndexOf('/', 1));
 
-            string         relayUrl     = String.Format(CultureInfo.InvariantCulture, "http://{0}:{1}{2}", s.HostName, port, requestUrl);
-            HttpWebRequest relayRequest = WebRequest.CreateHttp(relayUrl);
-            relayRequest.Proxy          = null;
+            string relayUrl = String.Format(CultureInfo.InvariantCulture, "http://{0}:{1}{2}", s.HostName, port, requestUrl);
+            var client = new HttpClient();
 
             if (context.Request.HttpMethod == "POST")
             {
-                Stream relayStream = relayRequest.GetRequestStream();
-                context.Request.InputStream.CopyTo(relayStream);
+                var content = new StreamContent(context.Request.InputStream);
+                var response = await client.PostAsync(relayUrl, content);
+                context.Response.ContentType = response.Content.Headers.ContentType.MediaType;
+                await response.Content.CopyToAsync(context.Response.OutputStream);
+                response.Dispose();
+            } else
+            {
+                var response = await client.GetAsync(relayUrl);
+                context.Response.ContentType = response.Content.Headers.ContentType.MediaType;
+                await response.Content.CopyToAsync(context.Response.OutputStream);
+                response.Dispose();
             }
-
-            WebResponse relayResponse = relayRequest.GetResponse();
-            context.Response.ContentType = relayResponse.ContentType;
-            relayResponse.GetResponseStream().CopyTo(context.Response.OutputStream);
-            relayResponse.Dispose();
         }
 
         /// <summary>
@@ -197,7 +192,7 @@ namespace Trinity.Network.Http
         /// </summary>
         /// <param name="instance_id">The server id.</param>
         /// <param name="context">The context of the request to relay.</param>
-        public void RelayRequest(int instance_id, HttpListenerContext context)
+        public async Task RelayRequest(int instance_id, HttpListenerContext context)
         {
             if (instance_id < 0 || instance_id >= m_RelayInstanceList.Count)
             {
@@ -206,9 +201,9 @@ namespace Trinity.Network.Http
                 Log.WriteLine(LogLevel.Error, "RelayRequest: Remote endpoint: {0}.", context.Request.RemoteEndPoint.ToString());
             }
 
-            AvailabilityGroup ag  = m_RelayInstanceList[instance_id];
-            int               idx = m_RelayRoundRobinTable[instance_id] = (m_RelayRoundRobinTable[instance_id] + 1) % ag.Instances.Count;
-            _RelayRequest(context, ag, idx);
+            AvailabilityGroup ag = m_RelayInstanceList[instance_id];
+            int idx = m_RelayRoundRobinTable[instance_id] = (m_RelayRoundRobinTable[instance_id] + 1) % ag.Instances.Count;
+            await _RelayRequest(context, ag, idx);
         }
 
         public void Dispose()
@@ -220,8 +215,7 @@ namespace Trinity.Network.Http
                     m_HttpServer.Stop();
                     (m_HttpServer as IDisposable).Dispose();
                     m_HttpServer = null;
-                }
-                catch { }
+                } catch { }
             }
         }
     }

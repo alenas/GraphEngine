@@ -4,18 +4,8 @@
 //
 using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Net;
-using System.Threading;
-using System.Threading.Tasks;
-using System.Diagnostics;
-
-using Trinity;
-using Trinity.Core.Lib;
-using Trinity.Network.Messaging;
-using Trinity.Network;
 using System.Globalization;
+
 using static Trinity.Configuration.ConfigurationConstants;
 
 namespace Trinity.Storage
@@ -95,8 +85,7 @@ namespace Trinity.Storage
                     try
                     {
                         return ProxyList[rand.Next(0, Global.ProxyCount)];
-                    }
-                    catch (Exception)
+                    } catch (Exception)
                     {
                         throw new Exception("No proxy is specified.");
                     }

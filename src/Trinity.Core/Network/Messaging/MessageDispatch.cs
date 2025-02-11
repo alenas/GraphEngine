@@ -3,21 +3,11 @@
 // Licensed under the MIT license. See LICENSE.md file in the project root for full license information.
 //
 using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Net;
-using System.Net.Sockets;
-using System.Text;
-using System.IO;
-
-using Trinity.Network.Messaging;
-using Trinity.Utilities;
-using Trinity;
-using Trinity.Network.Sockets;
-using Trinity.Diagnostics;
-using System.Diagnostics;
-using Trinity.Core.Lib;
 using System.Runtime.CompilerServices;
+
+using Trinity.Core.Lib;
+using Trinity.Diagnostics;
+using Trinity.Network.Messaging;
 
 
 namespace Trinity.Network.Sockets
@@ -133,8 +123,7 @@ namespace Trinity.Network.Sockets
                 sync_rsp_handlers[msgId] = message_handler;
                 Log.WriteLine(LogLevel.Debug, "Sync (rsp) message " + msgId + " is registered.");
                 return true;
-            }
-            catch (Exception ex)
+            } catch (Exception ex)
             {
                 Trinity.Diagnostics.Log.WriteLine(ex.Message);
                 Trinity.Diagnostics.Log.WriteLine(ex.StackTrace);
@@ -149,8 +138,7 @@ namespace Trinity.Network.Sockets
                 preserved_sync_rsp_handlers[msgId] = message_handler;
                 Log.WriteLine(LogLevel.Debug, "Preserved sync (rsp) message " + msgId + " is registered.");
                 return true;
-            }
-            catch (Exception ex)
+            } catch (Exception ex)
             {
                 Trinity.Diagnostics.Log.WriteLine(ex.Message);
                 Trinity.Diagnostics.Log.WriteLine(ex.StackTrace);
@@ -165,8 +153,7 @@ namespace Trinity.Network.Sockets
                 sync_handlers[msgId] = message_handler;
                 Log.WriteLine(LogLevel.Debug, "Sync message " + msgId + " is registered.");
                 return true;
-            }
-            catch (Exception ex)
+            } catch (Exception ex)
             {
                 Trinity.Diagnostics.Log.WriteLine(ex.Message);
                 Trinity.Diagnostics.Log.WriteLine(ex.StackTrace);
@@ -181,8 +168,7 @@ namespace Trinity.Network.Sockets
                 preserved_sync_handlers[msgId] = message_handler;
                 Log.WriteLine(LogLevel.Debug, "Preserved sync message " + msgId + " is registered.");
                 return true;
-            }
-            catch (Exception ex)
+            } catch (Exception ex)
             {
                 Trinity.Diagnostics.Log.WriteLine(ex.Message);
                 Trinity.Diagnostics.Log.WriteLine(ex.StackTrace);
@@ -197,8 +183,7 @@ namespace Trinity.Network.Sockets
                 async_handlers[msgId] = request_handler;
                 Log.WriteLine(LogLevel.Debug, "Async message " + msgId + " is registered.");
                 return true;
-            }
-            catch (Exception ex)
+            } catch (Exception ex)
             {
                 Trinity.Diagnostics.Log.WriteLine(ex.Message);
                 Trinity.Diagnostics.Log.WriteLine(ex.StackTrace);
@@ -213,8 +198,7 @@ namespace Trinity.Network.Sockets
                 preserved_async_handlers[msgId] = request_handler;
                 Log.WriteLine(LogLevel.Debug, "Preserved async message " + msgId + " is registered.");
                 return true;
-            }
-            catch (Exception ex)
+            } catch (Exception ex)
             {
                 Trinity.Diagnostics.Log.WriteLine(ex.Message);
                 Trinity.Diagnostics.Log.WriteLine(ex.StackTrace);
@@ -229,8 +213,7 @@ namespace Trinity.Network.Sockets
                 async_rsp_handlers[msgId] = request_handler;
                 Log.WriteLine(LogLevel.Debug, "Async with response message " + msgId + " is registered.");
                 return true;
-            }
-            catch (Exception ex)
+            } catch (Exception ex)
             {
                 Trinity.Diagnostics.Log.WriteLine(ex.Message);
                 Trinity.Diagnostics.Log.WriteLine(ex.StackTrace);
@@ -245,15 +228,14 @@ namespace Trinity.Network.Sockets
             if (TrinityErrorCode.E_SUCCESS == msgProcessResult)
             {
                 // Response buffer will be freed in Trinity.C after it is sent
-                sendRecvBuff->Buffer                     = response.Buffer;
-                sendRecvBuff->Length                     = (uint)response.Size;
-            }
-            else// TrinityErrorCode.E_RPC_EXCEPTION == msgProcessResult
+                sendRecvBuff->Buffer = response.Buffer;
+                sendRecvBuff->Length = (uint)response.Size;
+            } else// TrinityErrorCode.E_RPC_EXCEPTION == msgProcessResult
             {
                 //  The client is expecting a reply payload, it will be notified because
                 //  the payload length is E_RPC_EXCEPTION;
-                sendRecvBuff->Buffer                     = (byte*)Memory.malloc(sizeof(TrinityErrorCode));
-                sendRecvBuff->Length                     = sizeof(TrinityErrorCode);
+                sendRecvBuff->Buffer = (byte*)Memory.malloc(sizeof(TrinityErrorCode));
+                sendRecvBuff->Length = sizeof(TrinityErrorCode);
                 *(TrinityErrorCode*)sendRecvBuff->Buffer = TrinityErrorCode.E_RPC_EXCEPTION;
             }
         }
@@ -264,16 +246,15 @@ namespace Trinity.Network.Sockets
             if (TrinityErrorCode.E_SUCCESS == msgProcessResult)
             {
                 //  Response buffer will be freed in Trinity.C after it is sent
-                sendRecvBuff->Buffer                     = (byte*)Memory.malloc(sizeof(TrinityErrorCode));
-                sendRecvBuff->Length                     = sizeof(TrinityErrorCode);
+                sendRecvBuff->Buffer = (byte*)Memory.malloc(sizeof(TrinityErrorCode));
+                sendRecvBuff->Length = sizeof(TrinityErrorCode);
                 *(TrinityErrorCode*)sendRecvBuff->Buffer = TrinityErrorCode.E_SUCCESS;
-            }
-            else//  TrinityErrorCode.E_RPC_EXCEPTION == msgProcessResult
+            } else//  TrinityErrorCode.E_RPC_EXCEPTION == msgProcessResult
             {
                 //  The client is expecting an ACK package, it will be notified because
                 //  the status code would be E_RPC_EXCEPTION or E_MSG_OVERFLOW;
-                sendRecvBuff->Buffer                     = (byte*)Memory.malloc(sizeof(TrinityErrorCode));
-                sendRecvBuff->Length                     = sizeof(TrinityErrorCode);
+                sendRecvBuff->Buffer = (byte*)Memory.malloc(sizeof(TrinityErrorCode));
+                sendRecvBuff->Length = sizeof(TrinityErrorCode);
                 *(TrinityErrorCode*)sendRecvBuff->Buffer = msgProcessResult;
             }
         }
@@ -284,7 +265,7 @@ namespace Trinity.Network.Sockets
             byte* ByteArray = sendRecvBuff->Buffer;
             int Length = (int)sendRecvBuff->Length;
 
-            TrinityMessageType msgType = *(TrinityMessageType*)(sendRecvBuff->Buffer+TrinityProtocol.TrinityMsgTypeOffset);
+            TrinityMessageType msgType = *(TrinityMessageType*)(sendRecvBuff->Buffer + TrinityProtocol.TrinityMsgTypeOffset);
             ushort msgId = *(ushort*)(ByteArray + TrinityProtocol.TrinityMsgIdOffset);
             TrinityErrorCode msgProcessResult;
 
@@ -356,8 +337,7 @@ namespace Trinity.Network.Sockets
                     default:
                         throw new Exception("Not recognized message type.");
                 }
-            }
-            catch (MessageTooLongException ex)
+            } catch (MessageTooLongException ex)
             {
                 Log.WriteLine("Message Type: " + msgType);
                 Log.WriteLine("Message SN: " + msgId);
@@ -366,8 +346,7 @@ namespace Trinity.Network.Sockets
                 Log.WriteLine(ex.StackTrace);
                 _SetSendRecvBuff(TrinityErrorCode.E_MSG_OVERFLOW, sendRecvBuff);
                 return null;
-            }
-            catch (Exception ex)
+            } catch (Exception ex)
             {
                 Log.WriteLine("Message Type: " + msgType);
                 Log.WriteLine("Message SN: " + msgId);

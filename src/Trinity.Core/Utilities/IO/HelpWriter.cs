@@ -3,9 +3,6 @@
 // Licensed under the MIT license. See LICENSE.md file in the project root for full license information.
 //
 using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 
 namespace Trinity.Utilities
 {
@@ -37,7 +34,7 @@ namespace Trinity.Utilities
                 string desc_str = description.Substring(desc_index, lenght_to_write);
                 Console.WriteLine(desc_str);
 
-                int header_length = indent + max_option_length+4;
+                int header_length = indent + max_option_length + 4;
 
                 for (int i = 0; i < header_length; i++)
                     Console.Write(' ');

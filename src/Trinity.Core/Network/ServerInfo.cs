@@ -4,15 +4,12 @@
 //
 using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using System.Xml.Linq;
 using System.Net;
+using System.Xml.Linq;
+
 using Trinity.Configuration;
-using Trinity;
-using Trinity.Utilities;
 using Trinity.Diagnostics;
+using Trinity.Utilities;
 namespace Trinity.Network
 {
     /// <summary>
@@ -61,7 +58,7 @@ namespace Trinity.Network
         {
             HostName = hostName;
             AssemblyPath = assemblyPath;
-	        Port = port;
+            Port = port;
 
             this.Add(ConfigurationConstants.Tags.LOGGING.LocalName,
                 new ConfigurationEntry(ConfigurationConstants.Tags.LOGGING.LocalName,

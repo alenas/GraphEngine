@@ -2,22 +2,13 @@
 // Copyright (c) Microsoft. All rights reserved.
 // Licensed under the MIT license. See LICENSE.md file in the project root for full license information.
 //
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 using System.IO;
-using System.Threading;
-using System.Threading.Tasks;
-using System.Net;
-
-using Trinity;
-using Trinity.Network.Messaging;
-using Trinity.Network.Sockets;
-using Trinity.Core.Lib;
-using Trinity.Network;
 using System.Runtime.CompilerServices;
 using System.Runtime.InteropServices;
+
+using Trinity.Core.Lib;
+using Trinity.Network;
+using Trinity.Network.Messaging;
 
 namespace Trinity.Storage
 {
@@ -35,7 +26,7 @@ namespace Trinity.Storage
 
             LocalSendMessage(&buff);
 
-            if(buff.Length != sizeof(TrinityErrorCode))
+            if (buff.Length != sizeof(TrinityErrorCode))
             {
                 throw new IOException("LocalSendMessage responds with unexpected payload");
             }
@@ -58,11 +49,10 @@ namespace Trinity.Storage
             LocalSendMessage(&buff);
 
             int response_len = *(int*)buff.Buffer;
-            if(buff.Length != response_len + sizeof(int))
+            if (buff.Length != response_len + sizeof(int))
             {
                 throw new IOException("Local message handler throws an exception.");
-            }
-            else
+            } else
             {
                 TrinityMessage rsp_message = new TrinityMessage(buff.Buffer, (int)buff.Length);
                 response = new TrinityResponse(rsp_message);
@@ -90,7 +80,7 @@ namespace Trinity.Storage
         }
 
         /// <inheritdoc/>
-        public T GetCommunicationModule<T>() where T: CommunicationModule
+        public T GetCommunicationModule<T>() where T : CommunicationModule
         {
             return Global.CommunicationInstance.GetCommunicationModule<T>();
         }
@@ -99,14 +89,14 @@ namespace Trinity.Storage
         internal static void _serialize(byte** message, int* sizes, int count, out byte* buf, out int len)
         {
             len = 0;
-            for (int i=0; i<count; ++i)
+            for (int i = 0; i < count; ++i)
             {
                 len += sizes[i];
             }
 
             buf = (byte*)CMemory.C_malloc((ulong)len);
             byte* p = buf;
-            for (int i=0; i<count; ++i)
+            for (int i = 0; i < count; ++i)
             {
                 CMemory.C_memcpy((void*)p, (void*)*message, (ulong)*sizes);
                 p += *sizes;

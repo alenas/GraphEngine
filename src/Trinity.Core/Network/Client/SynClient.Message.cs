@@ -3,23 +3,9 @@
 // Licensed under the MIT license. See LICENSE.md file in the project root for full license information.
 //
 using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Net.Sockets;
-using System.Net;
-using System.IO;
 
-using Trinity;
-using Trinity.Core.Lib;
-using Trinity.Storage;
-using Trinity.Network.Messaging;
-using System.Diagnostics;
-using System.Threading;
-using System.Threading.Tasks;
-using System.Runtime.InteropServices;
-using Trinity.Diagnostics;
 using Trinity.FaultTolerance;
+using Trinity.Network.Messaging;
 
 namespace Trinity.Network.Client
 {
@@ -33,8 +19,7 @@ namespace Trinity.Network.Client
             if (CNativeNetwork.ClientSend(socket, buf, len))
             {
                 return true;
-            }
-            else
+            } else
             {
                 // ClientSend failed.
                 sock_connected = false;
@@ -53,8 +38,7 @@ namespace Trinity.Network.Client
             if (CNativeNetwork.ClientSendMulti(socket, bufs, lens, cnt))
             {
                 return true;
-            }
-            else
+            } else
             {
                 // ClientSend failed.
                 sock_connected = false;
@@ -78,8 +62,7 @@ namespace Trinity.Network.Client
             if (CNativeNetwork.ClientSend(socket, HeartbeatBuffer, 8))
             {
                 return WaitForAckPackage();
-            }
-            else
+            } else
             {
                 // ClientSend failed.
                 FailureHandlerRegistry.MachineFailover(ipe);
@@ -102,8 +85,7 @@ namespace Trinity.Network.Client
             if (DoSend(message, sizes, count))
             {
                 return WaitForAckPackage();
-            }
-            else
+            } else
             {
                 sock_connected = false;
                 return TrinityErrorCode.E_NETWORK_SEND_FAILURE;
@@ -131,17 +113,15 @@ namespace Trinity.Network.Client
                 if (recv_err == TrinityErrorCode.E_SUCCESS)
                 {
                     // will be freed by a message reader
-                    response = new TrinityResponse(buf, len); 
-                }
-                else if (recv_err == TrinityErrorCode.E_NETWORK_RECV_FAILURE)
+                    response = new TrinityResponse(buf, len);
+                } else if (recv_err == TrinityErrorCode.E_NETWORK_RECV_FAILURE)
                 {
                     // recv fail
                     sock_connected = false;
                 }
 
                 return recv_err;
-            }
-            else
+            } else
             {
                 // send fail
                 sock_connected = false;
@@ -161,8 +141,7 @@ namespace Trinity.Network.Client
             if (DoSend(message, size))
             {
                 return WaitForAckPackage();
-            }
-            else
+            } else
             {
                 sock_connected = false;
                 return TrinityErrorCode.E_NETWORK_SEND_FAILURE;
@@ -188,17 +167,15 @@ namespace Trinity.Network.Client
                 if (recv_err == TrinityErrorCode.E_SUCCESS)
                 {
                     // will be freed by a message reader
-                    response = new TrinityResponse(buf, len); 
-                }
-                else if (recv_err == TrinityErrorCode.E_NETWORK_RECV_FAILURE)
+                    response = new TrinityResponse(buf, len);
+                } else if (recv_err == TrinityErrorCode.E_NETWORK_RECV_FAILURE)
                 {
                     // recv fail
                     sock_connected = false;
                 }
 
                 return recv_err;
-            }
-            else
+            } else
             {
                 // send fail
                 sock_connected = false;

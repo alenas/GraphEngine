@@ -4,15 +4,11 @@
 //
 using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Net;
-using System.IO;
-using System.Threading.Tasks;
-
-using Trinity;
-using Trinity.Diagnostics;
 using System.Globalization;
+using System.IO;
+using System.Linq;
+using System.Net;
+using System.Threading.Tasks;
 
 namespace Trinity.Utilities
 {
@@ -79,8 +75,7 @@ namespace Trinity.Utilities
                 if (int_x > int_y)
                     return 1;
                 return 0;
-            }
-            else
+            } else
             {
                 if (x_bytes.Length == 16)
                 {
@@ -112,8 +107,7 @@ namespace Trinity.Utilities
                     if (long2_x > long2_y)
                         return 1;
                     return 0;
-                }
-                else
+                } else
                 {
                     throw new Exception("Invalid IPAddress Exception.");
                 }
@@ -146,8 +140,7 @@ namespace Trinity.Utilities
                 if (ipeA.Port > ipeB.Port)
                     return 1;
                 return 0;
-            }
-            else
+            } else
                 return ip_cmp_result;
         }
     }
@@ -204,8 +197,7 @@ namespace Trinity.Utilities
                     if (selectedIP == null)
                     {
                         selectedIP = ip;
-                    }
-                    else
+                    } else
                     {
                         selectedIP = ip;
                     }
@@ -268,8 +260,7 @@ namespace Trinity.Utilities
                 try
                 {
                     ips = Dns.GetHostAddresses(parts[0]);
-                }
-                catch (Exception)
+                } catch (Exception)
                 {
                 }
                 if (ips != null)
@@ -287,8 +278,7 @@ namespace Trinity.Utilities
                         return parts[0];
                 }
                 return hostName;
-            }
-            catch (Exception)
+            } catch (Exception)
             {
                 return ip.ToString().ToLowerInvariant();
             }
@@ -347,8 +337,7 @@ namespace Trinity.Utilities
             try
             {
                 File.Copy(source_path + file_name, dest_path + file_name, true);
-            }
-            catch (Exception e)
+            } catch (Exception e)
             {
                 Console.Error.WriteLine(e.Message);
             }
@@ -384,13 +373,11 @@ namespace Trinity.Utilities
                 if (same_file)
                 {
                     File.Copy(Trinity.Utilities.FileUtility.CompletePath(local_dir, false) + file_name, dest_path + file_name, true);
-                }
-                else
+                } else
                 {
                     File.Copy(Trinity.Utilities.FileUtility.CompletePath(local_dir, false) + server_host_name + "\\" + file_name, dest_path + file_name, true);
                 }
-            }
-            catch (Exception e)
+            } catch (Exception e)
             {
                 Console.Error.WriteLine(e.Message);
             }

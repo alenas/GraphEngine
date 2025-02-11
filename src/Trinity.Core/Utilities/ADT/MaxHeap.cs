@@ -3,9 +3,6 @@
 // Licensed under the MIT license. See LICENSE.md file in the project root for full license information.
 //
 using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 
 namespace Trinity.Utilities
 {
@@ -28,7 +25,7 @@ namespace Trinity.Utilities
             int cur = idx;
             int curchild = 2 * idx + 2;
 
-            for (; curchild < array.Length; )
+            for (; curchild < array.Length;)
             {
                 if (comparison(array[curchild], array[curchild - 1]) < 0)
                     --curchild;
@@ -39,8 +36,7 @@ namespace Trinity.Utilities
                     Swap(array, cur, curchild);
                     cur = curchild;
                     curchild = curchild * 2 + 2;
-                }
-                else
+                } else
                     break;
             }
             if (curchild == array.Length)

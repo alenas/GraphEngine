@@ -2,12 +2,6 @@
 // Copyright (c) Microsoft. All rights reserved.
 // Licensed under the MIT license. See LICENSE.md file in the project root for full license information.
 //
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
 namespace Trinity
 {
     /// <summary>
@@ -18,77 +12,77 @@ namespace Trinity
         /// <summary>
         /// Indicates that the operation is not supported.
         /// </summary>
-        E_NOTSUPPORTED          = -24,
+        E_NOTSUPPORTED = -24,
         /// <summary>
         /// Indicates an entry-not-found failure.
         /// </summary>
-        E_NOENTRY               = -23,
+        E_NOENTRY = -23,
         /// <summary>
         /// Indicates a failure in module/component/etc. initialization.
         /// </summary>
-        E_INIT_FAIL             = -22,
+        E_INIT_FAIL = -22,
         /// <summary>
         /// Indicates that a managed exception is thrown.
         /// Use this error code to propagate a managed exception
         /// to unmanaged code, which may not be able to directly
         /// catch managed exception.
         /// </summary>
-        E_MANAGED_EXCEPTION     = -21,
+        E_MANAGED_EXCEPTION = -21,
 
         /// <summary>
         /// Indicates that an unload operation has failed.
         /// </summary>
-        E_UNLOAD_FAIL           = -20,
+        E_UNLOAD_FAIL = -20,
 
         /// <summary>
         /// Indicates that a load operation has failed.
         /// </summary>
-        E_LOAD_FAIL             = -19,
+        E_LOAD_FAIL = -19,
 
         /// <summary>
         /// Indicates that a response message is too long.
         /// </summary>
-        E_MSG_OVERFLOW          = -18,
+        E_MSG_OVERFLOW = -18,
 
         /// <summary>
         /// Indicates that the network subsystem has shut down.
-        E_NETWORK_SHUTDOWN      = -17,   
-        
+        E_NETWORK_SHUTDOWN = -17,
+
         /// </summary>
         /// <summary>
         /// Indicates too many recursive cell locks, leading to overflow.
         /// </summary>
-        E_CELL_LOCK_OVERFLOW    = -16,
+        E_CELL_LOCK_OVERFLOW = -16,
 
         /// <summary>
         /// Indicates a timeout.
         /// </summary>
-        E_TIMEOUT               = -15,
+        E_TIMEOUT = -15,
 
         /// <summary>
         /// Indicates deadlocks. 
         /// </summary>
-        E_DEADLOCK              = -14,
+        E_DEADLOCK = -14,
 
         /// <summary>
         /// Indicates a remote message handler exception.
         /// </summary>
-        E_RPC_EXCEPTION         = -13,
+        E_RPC_EXCEPTION = -13,
 
         /// <summary>
         /// Indicates memory allocation failure.
         /// </summary>
-        E_NOMEM                 = -12,
+        E_NOMEM = -12,
 
         /// <summary>
         /// Represents network receiving failure.
         /// </summary>
-        E_NETWORK_RECV_FAILURE  = -11,
+        E_NETWORK_RECV_FAILURE = -11,
 
         /// <summary>
         /// Indicates that write operation is done on a readonly storage.
         /// </summary>
-        E_READONLY              = -10,
+        E_READONLY = -10,
 
         /// <summary>
         /// Indicates invalid arguments when calling a method.
@@ -98,7 +92,7 @@ namespace Trinity
         /// <summary>
         /// Indicates the cell type feature is not enabled.
         /// </summary>
-        E_CELL_TYPE_NOT_ENABLED =-8,
+        E_CELL_TYPE_NOT_ENABLED = -8,
 
         /// <summary>
         /// Represents an error when the expected cell type mismatches the existing one in the system.

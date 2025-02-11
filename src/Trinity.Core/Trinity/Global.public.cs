@@ -3,22 +3,14 @@
 // Licensed under the MIT license. See LICENSE.md file in the project root for full license information.
 //
 using System;
-using System.Collections.Generic;
-using System.Threading;
-using System.Text;
-using System.Net;
-using System.IO;
-using System.Diagnostics;
-using System.Reflection;
 using System.Linq;
+using System.Reflection;
+using System.Threading;
 
-using Trinity;
 using Trinity.Daemon;
+using Trinity.Diagnostics;
 using Trinity.Network;
 using Trinity.Storage;
-using Trinity.Utilities;
-using Trinity.Diagnostics;
-using System.Runtime.CompilerServices;
 
 namespace Trinity
 {
@@ -85,8 +77,7 @@ namespace Trinity
             try
             {
                 Initialized();
-            }
-            catch
+            } catch
             {
                 //TODO log
             }
@@ -107,7 +98,7 @@ namespace Trinity
                     }
 
                     generic_cell_ops = null;
-                    storage_schema   = null;
+                    storage_schema = null;
                     if (isLocalStorageInited)
                     {
                         local_storage.Dispose();
@@ -136,8 +127,7 @@ namespace Trinity
             try
             {
                 Uninitialized();
-            }
-            catch
+            } catch
             {
                 //TODO log
             }
@@ -188,8 +178,7 @@ namespace Trinity
                     var incremental = true;
                     var sigs_len = old_schema_signatures.Count();
 
-                    if (new_schema_signatures.Count() < sigs_len) { incremental = false; }
-                    else { incremental = Enumerable.SequenceEqual(old_schema_signatures, new_schema_signatures.Take(sigs_len)); }
+                    if (new_schema_signatures.Count() < sigs_len) { incremental = false; } else { incremental = Enumerable.SequenceEqual(old_schema_signatures, new_schema_signatures.Take(sigs_len)); }
 
                     if (!incremental)
                     {

@@ -3,11 +3,9 @@
 // Licensed under the MIT license. See LICENSE.md file in the project root for full license information.
 //
 using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.IO;
 using System.Globalization;
+using System.IO;
+using System.Text;
 
 namespace Trinity.Diagnostics
 {
@@ -67,8 +65,7 @@ namespace Trinity.Diagnostics
                     Console.ResetColor();
                     Console.WriteLine();
                     row++;
-                }
-                else
+                } else
                 {
                     if (i % 16 == 7)
                     {
@@ -150,8 +147,7 @@ namespace Trinity.Diagnostics
                         Console.ResetColor();
                         Console.WriteLine();
                         row++;
-                    }
-                    else
+                    } else
                     {
                         if (i % 16 == 7)
                         {
@@ -288,8 +284,7 @@ namespace Trinity.Diagnostics
                 {
                     sb.AppendLine();
                     row++;
-                }
-                else
+                } else
                 {
                     if (i % 16 == 7)
                     {

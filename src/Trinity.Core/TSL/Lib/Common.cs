@@ -3,9 +3,6 @@
 // Licensed under the MIT license. See LICENSE.md file in the project root for full license information.
 //
 using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 
 namespace Trinity.TSL.Lib
 {
@@ -22,20 +19,20 @@ namespace Trinity.TSL.Lib
         /// <summary>
         /// Returns null when a cell is not found.
         /// </summary>
-        ReturnNullOnCellNotFound     = 0x2,
+        ReturnNullOnCellNotFound = 0x2,
         /// <summary>
         /// Creates a new cell when a cell is not found.
         /// </summary>
-        CreateNewOnCellNotFound      = 0x4,
+        CreateNewOnCellNotFound = 0x4,
         /// <summary>
         /// Specifies that write-ahead-log should be performed with strong durability.
         /// </summary>
-        StrongLogAhead               = 0x8,
+        StrongLogAhead = 0x8,
         /// <summary>
         /// Specifies that write-ahead-log should be performed with weak durability. This option brings better performance,
         /// but the durability may be degraded when this option is used.
         /// </summary>
-        WeakLogAhead                 = 0x10,
+        WeakLogAhead = 0x10,
     }
 
     /// <summary>

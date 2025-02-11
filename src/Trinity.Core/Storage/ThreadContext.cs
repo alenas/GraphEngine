@@ -3,11 +3,8 @@
 // Licensed under the MIT license. See LICENSE.md file in the project root for full license information.
 //
 using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 using System.Threading;
-using System.Threading.Tasks;
+
 using Trinity.Diagnostics;
 
 namespace Trinity.Storage
@@ -38,7 +35,7 @@ namespace Trinity.Storage
     internal unsafe class ThreadContext : IDisposable
     {
         internal void* m_lock_ctx;
-        internal int  m_managedThreadId;
+        internal int m_managedThreadId;
         internal bool m_disposed = false;
 
         internal ThreadContext()

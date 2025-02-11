@@ -2,13 +2,10 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
-using System.Runtime.CompilerServices;
-using System.Text;
 using System.Threading;
-using System.Threading.Tasks;
+
 using Trinity.Diagnostics;
 using Trinity.Network;
-using Trinity.Network.Messaging;
 
 namespace Trinity.Storage
 {
@@ -68,7 +65,7 @@ namespace Trinity.Storage
         {
             return GetStorageByCellId(cellId).LoadCell(cellId, out cellBuf, out size, out cellType);
         }
-        
+
         /// <summary>
         /// Adds a new cell to the key-value store if the cell Id does not exist, or updates an existing cell in the key-value store if the cell Id already exists.
         /// </summary>
@@ -104,7 +101,7 @@ namespace Trinity.Storage
         {
             return GetStorageByCellId(cellId).RemoveCell(cellId);
         }
-        
+
         /// <summary>
         /// Gets the type of the cell with specified cell Id.
         /// </summary>
@@ -302,8 +299,7 @@ namespace Trinity.Storage
                     Log.WriteLine(LogLevel.Fatal, "No candidate local communication schema signature matches the remote one.\r\n\tName: {0}\r\n\tSignature: {1}", remote_schema_name, remote_schema_signature);
                     Global.Exit(-1);
                 }
-            }
-            else
+            } else
             {
                 my_schema = Global.CommunicationSchema;
             }
@@ -335,8 +331,7 @@ namespace Trinity.Storage
             if (comm_instance == null)
             {
                 return default(T);
-            }
-            else
+            } else
             {
                 return comm_instance.GetCommunicationModule<T>();
             }
@@ -391,7 +386,7 @@ namespace Trinity.Storage
         /// <param name="disposing">This parameter is not used.</param>
         protected virtual void Dispose(bool disposing)
         {
-            if(0 == Interlocked.CompareExchange(ref this.m_disposed, 1, 0))
+            if (0 == Interlocked.CompareExchange(ref this.m_disposed, 1, 0))
             {
                 foreach (var storage in StorageTable)
                 {

@@ -2,19 +2,11 @@
 // Copyright (c) Microsoft. All rights reserved.
 // Licensed under the MIT license. See LICENSE.md file in the project root for full license information.
 //
-using System;
 using System.Collections.Generic;
-using System.Linq;
 using System.Net;
-using System.Net.Sockets;
-using System.Text;
-using System.IO;
 
-using Trinity;
 using Trinity.Core.Lib;
-using Trinity.Utilities;
 using Trinity.Diagnostics;
-using Trinity.Network.Messaging;
 using Trinity.Network.Sockets;
 
 namespace Trinity.Network.Messaging
@@ -39,7 +31,7 @@ namespace Trinity.Network.Messaging
                 tupleList.Add(new TypeSyncRequestHandlerTuple
                 {
                     Id = (ushort)RequestType.Heartbeat,
-                    Handler = delegate(SynReqArgs args)
+                    Handler = delegate (SynReqArgs args)
                     {
                     }
                 });
@@ -57,7 +49,7 @@ namespace Trinity.Network.Messaging
                 tupleList.Add(new TypeSyncRequestHandlerTuple
                 {
                     Id = (ushort)RequestType.ReportProxy,
-                    Handler = delegate(SynReqArgs args)
+                    Handler = delegate (SynReqArgs args)
                     {
                         //IPAddress(4)+Port(4)
                         IPAddress aggregator_address = BitHelper.ToIPAddress(args.Buffer, args.Offset);
@@ -75,7 +67,7 @@ namespace Trinity.Network.Messaging
                 tupleList.Add(new TypeSyncRequestHandlerTuple
                 {
                     Id = (ushort)RequestType.LoadStorage,
-                    Handler = delegate(SynReqArgs args)
+                    Handler = delegate (SynReqArgs args)
                     {
                         Global.LocalStorage.LoadStorage();
                     }
@@ -86,7 +78,7 @@ namespace Trinity.Network.Messaging
                 tupleList.Add(new TypeSyncRequestHandlerTuple
                 {
                     Id = (ushort)RequestType.SaveStorage,
-                    Handler = delegate(SynReqArgs args)
+                    Handler = delegate (SynReqArgs args)
                     {
                         Global.LocalStorage.SaveStorage();
                     }
@@ -97,7 +89,7 @@ namespace Trinity.Network.Messaging
                 tupleList.Add(new TypeSyncRequestHandlerTuple
                 {
                     Id = (ushort)RequestType.ResetStorage,
-                    Handler = delegate(SynReqArgs args)
+                    Handler = delegate (SynReqArgs args)
                     {
                         Global.LocalStorage.ResetStorage();
                     }

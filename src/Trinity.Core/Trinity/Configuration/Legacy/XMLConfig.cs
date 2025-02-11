@@ -3,15 +3,12 @@
 // Licensed under the MIT license. See LICENSE.md file in the project root for full license information.
 //
 using System;
-using System.IO;
-using System.Text;
-using System.Xml;
-using System.Collections;
 using System.Collections.Generic;
-using System.Linq;
-using System.Xml.Linq;
-using System.Net;
 using System.Globalization;
+using System.IO;
+using System.Linq;
+using System.Net;
+using System.Xml.Linq;
 
 namespace Trinity.Configuration
 {
@@ -34,8 +31,7 @@ namespace Trinity.Configuration
             if (File.Exists(xml_file_name))
             {
                 root_xelement = XElement.Load(config_file);
-            }
-            else
+            } else
             {
                 root_xelement = new XElement("Trinity");
             }
@@ -65,8 +61,7 @@ namespace Trinity.Configuration
             try
             {
                 return Double.Parse(entry_value, CultureInfo.InvariantCulture);
-            }
-            catch
+            } catch
             {
                 return 0;
             }
@@ -88,8 +83,7 @@ namespace Trinity.Configuration
             try
             {
                 return Boolean.Parse(entry_value);
-            }
-            catch
+            } catch
             {
                 return false;
             }
@@ -136,8 +130,7 @@ namespace Trinity.Configuration
             try
             {
                 return Int32.Parse(entry_value, CultureInfo.InvariantCulture);
-            }
-            catch
+            } catch
             {
                 return 0;
             }
@@ -159,8 +152,7 @@ namespace Trinity.Configuration
             try
             {
                 return Int64.Parse(entry_value, CultureInfo.InvariantCulture);
-            }
-            catch
+            } catch
             {
                 return 0;
             }
@@ -183,8 +175,7 @@ namespace Trinity.Configuration
                 return (from entry in matched_sections.Elements(entry_label)
                         where ((string)entry.Attribute("name")).Equals(entry_name)
                         select entry.Value).ToArray<string>()[0];
-            }
-            catch (Exception)
+            } catch (Exception)
             {
                 return null;
             }
@@ -211,8 +202,7 @@ namespace Trinity.Configuration
                                       select ((string)entry.Attribute(property_name));
 
                 return property_values.ToArray<string>()[0];
-            }
-            catch (Exception)
+            } catch (Exception)
             {
                 return null;
             }
@@ -242,8 +232,7 @@ namespace Trinity.Configuration
                     dic.Add(attribute.Name.ToString(), attribute.Value);
                 }
 
-            }
-            catch (Exception)
+            } catch (Exception)
             {
                 return new Dictionary<string, string>();
             }
@@ -266,8 +255,7 @@ namespace Trinity.Configuration
                 return (from entry in current_section.Elements("entry")
                         where ((string)entry.Attribute("name")).Equals(entry_name)
                         select entry.Value).ToList<string>();
-            }
-            catch (Exception)
+            } catch (Exception)
             {
                 return new List<string>();
             }
@@ -289,8 +277,7 @@ namespace Trinity.Configuration
                 return (from entry in sections.Elements("entry")
                         where ((string)entry.Attribute("name")).Equals(entry_name)
                         select entry).ToList();
-            }
-            catch
+            } catch
             {
                 return new List<XElement>();
             }
@@ -315,8 +302,7 @@ namespace Trinity.Configuration
                 //selected section doesn't exist
                 selected_section = new XElement(section_label, new XAttribute("name", section_name));
                 root_xelement.Add(selected_section);
-            }
-            else
+            } else
             {
                 selected_section = matched_sections.First<XElement>();
             }
@@ -332,8 +318,7 @@ namespace Trinity.Configuration
                 //selected entry doesn't exist
                 selected_entry = new XElement(entry_label, new XAttribute("name", entry_name));
                 selected_section.Add(selected_entry);
-            }
-            else
+            } else
             {
                 selected_entry = matched_entries.First<XElement>();
             }
@@ -362,8 +347,7 @@ namespace Trinity.Configuration
                 //selected section doesn't exist
                 selected_section = new XElement(section_label, new XAttribute("name", section_name));
                 root_xelement.Add(selected_section);
-            }
-            else
+            } else
             {
                 selected_section = matched_sections.First<XElement>();
             }
@@ -380,8 +364,7 @@ namespace Trinity.Configuration
                 selected_entry = new XElement(entry_label, new XAttribute("name", entry_name));
                 selected_section.Add(selected_entry);
                 selected_entry.SetValue(entry_value);
-            }
-            else
+            } else
             {
                 selected_entry = matched_entries.First<XElement>();
             }
@@ -408,8 +391,7 @@ namespace Trinity.Configuration
                 //selected section doesn't exist
                 selected_section = new XElement(section_label, new XAttribute("name", section_name));
                 root_xelement.Add(selected_section);
-            }
-            else
+            } else
             {
                 selected_section = matched_sections.First<XElement>();
             }
@@ -451,8 +433,7 @@ namespace Trinity.Configuration
                 //selected section doesn't exist
                 selected_section = new XElement(section_label, new XAttribute("name", section_name));
                 root_xelement.Add(selected_section);
-            }
-            else
+            } else
             {
                 selected_section = matched_sections.First<XElement>();
             }
@@ -469,8 +450,7 @@ namespace Trinity.Configuration
                 selected_entry = new XElement(entry_label, new XAttribute("name", entry_name));
                 selected_section.Add(selected_entry);
                 selected_entry.SetValue(entry_value);
-            }
-            else
+            } else
             {
                 selected_entry = matched_entries.First<XElement>();
             }
@@ -499,8 +479,7 @@ namespace Trinity.Configuration
                 //selected section doesn't exist
                 selected_section = new XElement(section_label, new XAttribute("name", section_name));
                 root_xelement.Add(selected_section);
-            }
-            else
+            } else
             {
                 selected_section = matched_sections.First<XElement>();
             }

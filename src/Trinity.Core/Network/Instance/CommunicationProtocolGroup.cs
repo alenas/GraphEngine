@@ -6,10 +6,6 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Net;
-using System.Text;
-using System.Threading.Tasks;
-using Trinity.Diagnostics;
-using Trinity.Network.Http;
 
 namespace Trinity.Network
 {
@@ -78,8 +74,7 @@ namespace Trinity.Network
                 .FirstOrDefault() as CommunicationSchemaAttribute;
 
             if (schema_attr == null) return new DefaultCommunicationSchema();
-            try { return schema_attr.CommunicationSchemaType.GetConstructor(new Type[] { }).Invoke(new object[] { }) as ICommunicationSchema; }
-            catch { return new DefaultCommunicationSchema(); }
+            try { return schema_attr.CommunicationSchemaType.GetConstructor(new Type[] { }).Invoke(new object[] { }) as ICommunicationSchema; } catch { return new DefaultCommunicationSchema(); }
         }
 
         /// <summary>

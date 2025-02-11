@@ -3,18 +3,9 @@
 // Licensed under the MIT license. See LICENSE.md file in the project root for full license information.
 //
 using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Net;
-using System.Threading;
 using System.Threading.Tasks;
-using System.Diagnostics;
 
-using Trinity;
-using Trinity.Core.Lib;
 using Trinity.Network.Messaging;
-using Trinity.Network;
 
 namespace Trinity.Storage
 {
@@ -34,8 +25,7 @@ namespace Trinity.Storage
                 {
                     storage.SendMessage(msg);
                 });
-            }
-            catch (Exception)
+            } catch (Exception)
             {
                 return false;
             }
@@ -57,8 +47,7 @@ namespace Trinity.Storage
                     s.SendMessage(msg);
                 }
                     );
-            }
-            catch (Exception)
+            } catch (Exception)
             {
                 return false;
             }
@@ -80,8 +69,7 @@ namespace Trinity.Storage
                     s.SendMessage(msg);
                 }
                     );
-            }
-            catch (Exception)
+            } catch (Exception)
             {
                 return false;
             }

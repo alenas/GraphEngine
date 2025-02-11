@@ -4,28 +4,26 @@
 //
 using System;
 using System.Collections.Generic;
-using System.Text;
-using System.Threading.Tasks;
-using Trinity.Diagnostics;
+
 using Trinity.TSL.Lib;
 
 namespace Trinity.Storage
 {
     partial class LocalMemoryStorage
     {
-        private Action<LocalMemoryStorage, ICell>                                m_SaveGenericCell_ICell;
-        private Action<LocalMemoryStorage, long, ICell>                    		 m_SaveGenericCell_long_ICell;
-        private Action<LocalMemoryStorage, CellAccessOptions, ICell>       		 m_SaveGenericCell_CellAccessOptions_ICell;
-        private Action<LocalMemoryStorage, CellAccessOptions, long, ICell> 		 m_SaveGenericCell_CellAccessOptions_long_ICell;
-        private Func<LocalMemoryStorage, long, ICell>                      		 m_LoadGenericCell_long;
-        private Func<string, ICell>                    		                     m_NewGenericCell_string;
-        private Func<long, string, ICell>              		                     m_NewGenericCell_long_string;
-        private Func<string, string, ICell>      		                         m_NewGenericCell_string_string;
-        private Func<LocalMemoryStorage, long, ICellAccessor>              		 m_UseGenericCell_long;
+        private Action<LocalMemoryStorage, ICell> m_SaveGenericCell_ICell;
+        private Action<LocalMemoryStorage, long, ICell> m_SaveGenericCell_long_ICell;
+        private Action<LocalMemoryStorage, CellAccessOptions, ICell> m_SaveGenericCell_CellAccessOptions_ICell;
+        private Action<LocalMemoryStorage, CellAccessOptions, long, ICell> m_SaveGenericCell_CellAccessOptions_long_ICell;
+        private Func<LocalMemoryStorage, long, ICell> m_LoadGenericCell_long;
+        private Func<string, ICell> m_NewGenericCell_string;
+        private Func<long, string, ICell> m_NewGenericCell_long_string;
+        private Func<string, string, ICell> m_NewGenericCell_string_string;
+        private Func<LocalMemoryStorage, long, ICellAccessor> m_UseGenericCell_long;
         private Func<LocalMemoryStorage, long, CellAccessOptions, ICellAccessor> m_UseGenericCell_long_CellAccessOptions;
         private Func<LocalMemoryStorage, long, CellAccessOptions, string, ICellAccessor> m_UseGenericCell_long_CellAccessOptions_string;
-        private Func<LocalMemoryStorage, IEnumerable<ICell>>                     m_EnumerateGenericCells;
-        private Func<LocalMemoryStorage, IEnumerable<ICellAccessor>>             m_EnumerateGenericCellAccessors;
+        private Func<LocalMemoryStorage, IEnumerable<ICell>> m_EnumerateGenericCells;
+        private Func<LocalMemoryStorage, IEnumerable<ICellAccessor>> m_EnumerateGenericCellAccessors;
 
         /// <summary>
         /// Adds a new cell to the key-value store if the cell Id does not exist, or updates an existing cell in the key-value store if the cell Id already exists.
@@ -181,19 +179,19 @@ namespace Trinity.Storage
 
         internal void RegisterGenericOperationsProvider(IGenericCellOperations operations)
         {
-            m_SaveGenericCell_ICell                        = operations.SaveGenericCell;
-            m_SaveGenericCell_long_ICell                   = operations.SaveGenericCell;
-            m_SaveGenericCell_CellAccessOptions_ICell      = operations.SaveGenericCell;
+            m_SaveGenericCell_ICell = operations.SaveGenericCell;
+            m_SaveGenericCell_long_ICell = operations.SaveGenericCell;
+            m_SaveGenericCell_CellAccessOptions_ICell = operations.SaveGenericCell;
             m_SaveGenericCell_CellAccessOptions_long_ICell = operations.SaveGenericCell;
-            m_LoadGenericCell_long                         = operations.LoadGenericCell;
-            m_NewGenericCell_string                        = operations.NewGenericCell;
-            m_NewGenericCell_long_string                   = operations.NewGenericCell;
-            m_NewGenericCell_string_string                 = operations.NewGenericCell;
-            m_UseGenericCell_long                          = operations.UseGenericCell;
-            m_UseGenericCell_long_CellAccessOptions        = operations.UseGenericCell;
+            m_LoadGenericCell_long = operations.LoadGenericCell;
+            m_NewGenericCell_string = operations.NewGenericCell;
+            m_NewGenericCell_long_string = operations.NewGenericCell;
+            m_NewGenericCell_string_string = operations.NewGenericCell;
+            m_UseGenericCell_long = operations.UseGenericCell;
+            m_UseGenericCell_long_CellAccessOptions = operations.UseGenericCell;
             m_UseGenericCell_long_CellAccessOptions_string = operations.UseGenericCell;
-            m_EnumerateGenericCells                        = operations.EnumerateGenericCells;
-            m_EnumerateGenericCellAccessors                = operations.EnumerateGenericCellAccessors;
+            m_EnumerateGenericCells = operations.EnumerateGenericCells;
+            m_EnumerateGenericCellAccessors = operations.EnumerateGenericCellAccessors;
         }
     }
 }

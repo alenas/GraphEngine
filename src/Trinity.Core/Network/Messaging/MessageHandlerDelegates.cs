@@ -2,12 +2,6 @@
 // Copyright (c) Microsoft. All rights reserved.
 // Licensed under the MIT license. See LICENSE.md file in the project root for full license information.
 //
-using System;
-
-using Trinity;
-using Trinity.Network;
-using Trinity.Network.Messaging;
-
 namespace Trinity.Network.Messaging
 {
     /// <summary>

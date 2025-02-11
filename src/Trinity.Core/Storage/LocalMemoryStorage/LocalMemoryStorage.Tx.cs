@@ -4,18 +4,10 @@
 //
 //#define _TWO_PHASE_CELL_MANIPULATION_
 using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.IO;
-using System.Threading;
-using System.Threading.Tasks;
-using System.Net;
-
-using Trinity;
 using System.Runtime.CompilerServices;
-using Trinity.Core.Lib;
+
 using Trinity.Configuration;
+using Trinity.Core.Lib;
 using Trinity.Storage.Transaction;
 
 namespace Trinity.Storage
@@ -127,7 +119,7 @@ namespace Trinity.Storage
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public TrinityErrorCode SaveCell(LocalTransactionContext tx, long cellId, byte* buff, int cellSize, ushort cellType)
         {
-            TrinityErrorCode eResult= CLocalMemoryStorage.TxCSaveCell(tx.m_pctx, cellId, buff, cellSize, cellType);
+            TrinityErrorCode eResult = CLocalMemoryStorage.TxCSaveCell(tx.m_pctx, cellId, buff, cellSize, cellType);
             return eResult;
         }
 
@@ -142,7 +134,7 @@ namespace Trinity.Storage
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public TrinityErrorCode AddCell(LocalTransactionContext tx, long cellId, byte* buff, int cellSize, ushort cellType)
         {
-            TrinityErrorCode eResult= CLocalMemoryStorage.TxCAddCell(tx.m_pctx, cellId, buff, cellSize, cellType);
+            TrinityErrorCode eResult = CLocalMemoryStorage.TxCAddCell(tx.m_pctx, cellId, buff, cellSize, cellType);
             return eResult;
         }
 
@@ -156,7 +148,7 @@ namespace Trinity.Storage
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public TrinityErrorCode UpdateCell(LocalTransactionContext tx, long cellId, byte* buff, int cellSize)
         {
-            TrinityErrorCode eResult= CLocalMemoryStorage.TxCUpdateCell(tx.m_pctx, cellId, buff, cellSize);
+            TrinityErrorCode eResult = CLocalMemoryStorage.TxCUpdateCell(tx.m_pctx, cellId, buff, cellSize);
             return eResult;
         }
 
@@ -173,7 +165,7 @@ namespace Trinity.Storage
         {
             int index, cellSize;
             byte* cellPtr = null;
-            TrinityErrorCode eResult= CLocalMemoryStorage.TxCGetLockedCellInfo4CellAccessor(tx.m_pctx, cellId, out cellSize, out cellType, out cellPtr, out index);
+            TrinityErrorCode eResult = CLocalMemoryStorage.TxCGetLockedCellInfo4CellAccessor(tx.m_pctx, cellId, out cellSize, out cellType, out cellPtr, out index);
             if (eResult == TrinityErrorCode.E_CELL_NOT_FOUND)
             {
                 cellBuff = new byte[0];

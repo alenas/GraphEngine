@@ -136,14 +136,11 @@ EXECUTE_PROCESS(
 )
 
 IF(WIN32)
-   FIND_PROGRAM(NUGET_EXE nuget PATHS ${CMAKE_BINARY_DIR}/tools)
+   FIND_PROGRAM(NUGET_EXE nuget)
    IF(NUGET_EXE)
        MESSAGE("-- Found nuget: ${NUGET_EXE}")
    ELSE()
-        SET(NUGET_EXE ${CMAKE_BINARY_DIR}/tools/nuget.exe)
-        MESSAGE("-- Downloading nuget...")
-        FILE(DOWNLOAD https://dist.nuget.org/win-x86-commandline/latest/nuget.exe ${NUGET_EXE})
-        MESSAGE("nuget.exe downloaded and saved to ${NUGET_EXE}")
+       MESSAGE(SEND_ERROR "Command 'nuget' is not found.")
    ENDIF()
 ENDIF()
 
@@ -262,8 +259,8 @@ FUNCTION(DOTNET_GET_DEPS _DN_PROJECT arguments)
     ENDIF()
 
     IF(_DN_NETCOREAPP)
-        SET(_DN_BUILD_OPTIONS -f net8.0)
-        SET(_DN_PACK_OPTIONS /p:TargetFrameworks=net8.0)
+        SET(_DN_BUILD_OPTIONS -f net9.0)
+        SET(_DN_PACK_OPTIONS /p:TargetFrameworks=net9.0)
     ELSEIF(UNIX)
         # Unix builds default to netstandard2.0
         SET(_DN_BUILD_OPTIONS -f netstandard2.0)
@@ -386,7 +383,7 @@ FUNCTION(RUN_DOTNET DOTNET_PROJECT)
         COMMAND ${DOTNET_EXE} clean ${DOTNET_PROJPATH} ${DOTNET_BUILD_PROPERTIES}
         COMMAND ${DOTNET_EXE} build --no-restore ${DOTNET_PROJPATH} -c ${DOTNET_CONFIG} ${DOTNET_BUILD_PROPERTIES} ${DOTNET_BUILD_OPTIONS}
         # XXX tfm
-        COMMAND ${DOTNET_EXE} ${DOTNET_OUTPUT_PATH}/net8.0/${DOTNET_PROJNAME}.dll ${DOTNET_ARGUMENTS}
+        COMMAND ${DOTNET_EXE} ${DOTNET_OUTPUT_PATH}/net9.0/${DOTNET_PROJNAME}.dll ${DOTNET_ARGUMENTS}
         COMMAND ${CMAKE_COMMAND} -E touch ${CMAKE_CURRENT_BINARY_DIR}/${DOTNET_PROJNAME}.runtimestamp
         WORKING_DIRECTORY ${DOTNET_OUTPUT_PATH})
     ADD_CUSTOM_TARGET(
@@ -401,7 +398,7 @@ FUNCTION(TEST_DOTNET DOTNET_PROJECT)
     IF(WIN32)
         SET(test_framework_args "")
     ELSE()
-        SET(test_framework_args -f net8.0)
+        SET(test_framework_args -f net9.0)
     ENDIF()
 
     ADD_TEST(NAME              ${DOTNET_PROJNAME}

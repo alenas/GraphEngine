@@ -2,15 +2,7 @@
 // Copyright (c) Microsoft. All rights reserved.
 // Licensed under the MIT license. See LICENSE.md file in the project root for full license information.
 //
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using Trinity.Diagnostics;
-using System.Net;
-using Trinity.Network.Messaging;
 using System.Threading;
-using System.Runtime;
 #if !CORECLR
 using System.Runtime.ConstrainedExecution;
 #endif
@@ -35,7 +27,7 @@ namespace Trinity.FaultTolerance
 #endif
         private static void UnLock()
         {
-           spinlock = 0;
+            spinlock = 0;
         }
     }
 }

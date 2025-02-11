@@ -2,15 +2,12 @@
 // Copyright (c) Microsoft. All rights reserved.
 // Licensed under the MIT license. See LICENSE.md file in the project root for full license information.
 //
-using System;
-using Trinity.Network;
-using Trinity.Diagnostics;
-using Trinity.Core.Lib;
-using System.IO;
-using System.Runtime.InteropServices;
-using Trinity.Configuration;
-using Trinity.Utilities;
 using System.Linq;
+
+using Trinity.Configuration;
+using Trinity.Diagnostics;
+using Trinity.Network;
+using Trinity.Utilities;
 
 namespace Trinity
 {

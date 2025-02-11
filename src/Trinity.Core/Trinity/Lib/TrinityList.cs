@@ -2,11 +2,6 @@
 // Copyright (c) Microsoft. All rights reserved.
 // Licensed under the MIT license. See LICENSE.md file in the project root for full license information.
 //
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Runtime.InteropServices;
-using System.Text;
 using System.Threading;
 
 namespace Trinity.Core.Lib
@@ -99,10 +94,9 @@ namespace Trinity.Core.Lib
                 {
                     if (Interlocked.CompareExchange(ref Buckets[bucket_index], index, right_node) == right_node)
                         return true;
-                }
-                else
+                } else
                     if (Interlocked.CompareExchange(ref NextEntryArray[left_node], index, right_node) == right_node)
-                        return true;
+                    return true;
             } while (true);
         }
 
@@ -124,10 +118,9 @@ namespace Trinity.Core.Lib
             {
                 if (Interlocked.CompareExchange(ref Buckets[bucket_index], right_node_next, right_node) != right_node)
                     right_node = Search(Key[right_node], bucket_index, out left_node);
-            }
-            else
+            } else
                 if (Interlocked.CompareExchange(ref NextEntryArray[left_node], right_node_next, right_node) != right_node)
-                    right_node = Search(Key[right_node], bucket_index, out left_node);
+                right_node = Search(Key[right_node], bucket_index, out left_node);
             return true;
         }
 

@@ -10,7 +10,7 @@ using System.Linq;
 using System.Net;
 using System.Runtime.CompilerServices;
 using System.Text;
-using System.Threading.Tasks;
+
 using Trinity.TSL.Lib;
 
 namespace Trinity.Network.Http
@@ -137,8 +137,7 @@ namespace Trinity.Network.Http
                         if (first)
                         {
                             first = false;
-                        }
-                        else
+                        } else
                         {
                             str_builder.Append(',');
                         }
@@ -165,8 +164,7 @@ namespace Trinity.Network.Http
                         if (first)
                         {
                             first = false;
-                        }
-                        else
+                        } else
                         {
                             str_builder.Append(',');
                         }
@@ -316,12 +314,12 @@ namespace Trinity.Network.Http
                 if (separator_idx >= 0)
                 {
                     string module_name = ctx.Request.RawUrl.Substring(1, separator_idx - 1);
-                    url_root          += "/" + module_name;
+                    url_root += "/" + module_name;
                 }
             }
 
             var responseObj = GenerateDefaultHttpHandlerResponseObject(url_root, availableEndpointNames, serverType);
-            var rsp_json    = Serializer.ToString(responseObj);
+            var rsp_json = Serializer.ToString(responseObj);
 
             using (var sw = new StreamWriter(ctx.Response.OutputStream))
             {
@@ -381,7 +379,7 @@ namespace Trinity.Network.Http
             HttpEndpointDescriptor desc = new HttpEndpointDescriptor { address = String.Format(CultureInfo.InvariantCulture, "{0}/{1}/", url_root, endpoint) };
 
             string handler_name = endpoint + "Handler";
-            var    handler      = serverType.GetMethod(handler_name);
+            var handler = serverType.GetMethod(handler_name);
 
             if (handler == null)
                 return desc;
@@ -390,12 +388,12 @@ namespace Trinity.Network.Http
             //  void handler_name(req_type request, out rsp_type response)
             //    -or-
             //  void handler_name(out rsp_type response)
-            var    parameters   = handler.GetParameters();
-            var    req_param    = parameters.FirstOrDefault(_ => !_.IsOut);
-            var    rsp_param    = parameters.FirstOrDefault(_ => _.IsOut);
+            var parameters = handler.GetParameters();
+            var req_param = parameters.FirstOrDefault(_ => !_.IsOut);
+            var rsp_param = parameters.FirstOrDefault(_ => _.IsOut);
 
-            var    req_type     = req_param != null ? req_param.ParameterType : null;
-            var    rsp_type     = rsp_param != null ? rsp_param.ParameterType : null;
+            var req_type = req_param != null ? req_param.ParameterType : null;
+            var rsp_type = rsp_param != null ? rsp_param.ParameterType : null;
 
             GetProtocolDescription(req_type, out desc.requestType, out desc.requestParameters);
             GetProtocolDescription(rsp_type, out desc.responseType, out desc.responseParameters);

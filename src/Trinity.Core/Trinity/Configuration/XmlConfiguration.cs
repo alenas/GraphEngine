@@ -1,11 +1,9 @@
 using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using System.Xml.Linq;
 using System.IO;
-using System.Diagnostics;
+using System.Linq;
+using System.Xml.Linq;
+
 using Trinity.Diagnostics;
 
 namespace Trinity.Configuration
@@ -119,7 +117,7 @@ namespace Trinity.Configuration
             var localSections = inputUnit.Elements.Where(_ => _.Name != ConfigurationConstants.Tags.CLUSTER);
 
             // merge local
-            var mergedEntries = MergeSections(localSections.Select(_ => _.Name == ConfigurationConstants.Tags.LOCAL ? _.Elements() : new[]{ _ }));
+            var mergedEntries = MergeSections(localSections.Select(_ => _.Name == ConfigurationConstants.Tags.LOCAL ? _.Elements() : new[] { _ }));
 
             XElement localSection = new XElement(ConfigurationConstants.Tags.LOCAL, mergedEntries);
 
@@ -150,9 +148,9 @@ namespace Trinity.Configuration
                                 node.Add(entry.Value);
                 }
                 return _;
-            }).Select(_ => MergeSections(new []{ _ }).First());
+            }).Select(_ => MergeSections(new[] { _ }).First());
 
-            return new ParseUnit(new[]{ localSection }.Concat(clusterSections));
+            return new ParseUnit(new[] { localSection }.Concat(clusterSections));
         }
         #endregion
 
@@ -194,7 +192,7 @@ namespace Trinity.Configuration
 
         private XElement SetDefaultNamespace(XElement element)
         {
-            XName name = element.Name.NamespaceName == string.Empty?
+            XName name = element.Name.NamespaceName == string.Empty ?
                 ConfigurationConstants.NS + element.Name.LocalName :
                 element.Name;
             return new XElement(name, element.Elements().Select(SetDefaultNamespace), element.Attributes());
@@ -231,8 +229,7 @@ namespace Trinity.Configuration
                     if (indexMap.ContainsKey(key))
                     {
                         list[indexMap[key]] = element;
-                    }
-                    else
+                    } else
                     {
                         indexMap[key] = list.Count;
                         list.Add(element);

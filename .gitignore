@@ -114,3 +114,8 @@ CMakeSettings.json
 Directory.Build.props
 .ionide
 launchSettings.json
+/out/build/*
+/bin/
+/build/
+/lib/
+**/out/

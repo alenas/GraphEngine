@@ -4,9 +4,8 @@ using System.Globalization;
 using System.IO;
 using System.Linq;
 using System.Net;
-using System.Text;
-using System.Threading.Tasks;
 using System.Xml.Linq;
+
 using Trinity.Configuration;
 using Trinity.Diagnostics;
 using Trinity.Network;
@@ -212,7 +211,7 @@ namespace Trinity
                 {
                     if (instance.AssemblyPath != null)
                     {
-                        if (IPAddressComparer.IsLocalhost(instance.HostName) && 
+                        if (IPAddressComparer.IsLocalhost(instance.HostName) &&
                             FileUtility.ComparePath(instance.AssemblyPath, Global.MyAssemblyPath))
                         {
                             return instance;
@@ -244,7 +243,7 @@ namespace Trinity
                 {
                     if (instance.AssemblyPath != null)
                     {
-                        if (IPAddressComparer.IsLocalhost(instance.HostName) && 
+                        if (IPAddressComparer.IsLocalhost(instance.HostName) &&
                             FileUtility.ComparePath(instance.AssemblyPath, Global.MyAssemblyPath))
                         {
                             return instance;
@@ -310,8 +309,7 @@ namespace Trinity
 
                 Proxies.Clear();
                 Proxies.AddRange(_LegacyGetAvailabilityGroupList(xml_config, "Proxies", "Proxy", "ProxyId"));
-            }
-            catch (Exception e)
+            } catch (Exception e)
             {
                 Log.WriteLine(LogLevel.Error, "There are errors in your configuration file.");
                 Log.WriteLine(e.Message);

@@ -3,8 +3,6 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
-using System.Text;
-using System.Threading.Tasks;
 using System.Xml.Linq;
 
 namespace Trinity.Configuration
@@ -125,8 +123,7 @@ namespace Trinity.Configuration
                 try
                 {
                     prop.SetValue(instance, setting.GetValue(prop.PropertyType));
-                }
-                catch
+                } catch
                 {
                     //TODO log down the error?
                 }
@@ -184,8 +181,7 @@ namespace Trinity.Configuration
                     {
                         entry.m_children.Add(ExtractConfigurationEntry(child, prop.Name));
                     }
-                }
-                else
+                } else
                 {
                     entry.AddSetting(prop.Name, prop.GetValue(instance).ToString());
                 }

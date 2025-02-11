@@ -3,12 +3,9 @@
 // Licensed under the MIT license. See LICENSE.md file in the project root for full license information.
 //
 using System;
-using System.Collections.Generic;
-using System.Diagnostics;
 using System.Linq;
 using System.Runtime.CompilerServices;
-using System.Text;
-using System.Threading.Tasks;
+
 using Trinity.Diagnostics;
 using Trinity.Network.Http;
 using Trinity.Network.Messaging;
@@ -34,8 +31,7 @@ namespace Trinity.Network
             if (instance.RunningMode == RunningMode.Client)
             {
                 ClientInitialize(RunningMode.Server);
-            }
-            else
+            } else
             {
                 ServerInitialize(instance);
             }
@@ -102,8 +98,7 @@ namespace Trinity.Network
                 string msg = "CommunicationModule " + moduleName + " not found on the remote side.";
                 Log.WriteLine(LogLevel.Error, msg);
                 throw new InvalidOperationException(msg);
-            }
-            else
+            } else
             {
                 this.SynReqIdOffset = synReqOffset;
                 this.SynReqRspIdOffset = synReqRspOffset;

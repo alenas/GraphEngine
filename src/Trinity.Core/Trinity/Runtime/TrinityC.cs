@@ -3,14 +3,9 @@
 // Licensed under the MIT license. See LICENSE.md file in the project root for full license information.
 //
 using System;
-using System.Collections.Generic;
-using System.IO;
-using System.Linq;
-using System.Reflection;
 using System.Runtime.CompilerServices;
 using System.Runtime.InteropServices;
-using System.Text;
-using System.Threading.Tasks;
+
 using Trinity.Utilities;
 
 namespace Trinity
@@ -19,7 +14,7 @@ namespace Trinity
     {
         internal const string AssemblyName = "Trinity";
         private static object s_initlock = new object();
-        private static bool   s_initialized = false;
+        private static bool s_initialized = false;
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         internal unsafe static void Init()
@@ -41,7 +36,7 @@ namespace Trinity
                 s_initialized = true;
             }
         }
-        
+
         [DllImport(TrinityC.AssemblyName)]
         private static extern unsafe void __INIT_TRINITY_C__(char* pAssemblyPath);
     }

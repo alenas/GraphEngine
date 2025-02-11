@@ -3,21 +3,13 @@
 // Licensed under the MIT license. See LICENSE.md file in the project root for full license information.
 //
 using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 using System.IO;
-using System.Threading;
-using System.Threading.Tasks;
+using System.Linq;
 
-using Trinity.Utilities;
-using Trinity.Diagnostics;
-using Trinity;
-using Trinity.Daemon;
-using System.Diagnostics;
-using Trinity.Core.Lib;
-using System.Runtime.CompilerServices;
 using Trinity.Configuration;
+using Trinity.Core.Lib;
+using Trinity.Diagnostics;
+
 using static Trinity.Utilities.EventRaiser;
 
 namespace Trinity.Storage
@@ -113,7 +105,7 @@ namespace Trinity.Storage
         /// <returns></returns>
         public unsafe string GetStorageSlot(bool isPrimary)
         {
-            char* buf  = CLocalMemoryStorage.CGetStorageSlot(isPrimary ? 1 : 0);
+            char* buf = CLocalMemoryStorage.CGetStorageSlot(isPrimary ? 1 : 0);
             string ret = new string(buf);
             Memory.free(buf);
             return ret;
@@ -131,8 +123,7 @@ namespace Trinity.Storage
                 try
                 {
                     Directory.CreateDirectory(storage_root);
-                }
-                catch
+                } catch
                 {
                     Log.WriteLine(LogLevel.Error, "Error occurs when creating StorageRoot: " + storage_root);
                     return TrinityErrorCode.E_FAILURE;
@@ -146,8 +137,7 @@ namespace Trinity.Storage
                 {
                     CTrinityConfig.SetStorageRoot(p, buff.Length);
                 }
-            }
-            catch
+            } catch
             {
                 return TrinityErrorCode.E_FAILURE;
             }
@@ -185,7 +175,7 @@ namespace Trinity.Storage
 
                 int min_len = Math.Min(schema_sig_from_storage_root.Length, schema_sig_from_tsl.Length);
 
-                for (int i = 0; i<min_len; ++i)
+                for (int i = 0; i < min_len; ++i)
                 {
                     if (schema_sig_from_storage_root[i] != schema_sig_from_tsl[i])
                     {
@@ -194,8 +184,7 @@ namespace Trinity.Storage
                         Log.WriteLine(LogLevel.Error, "Got: {0}.", schema_sig_from_storage_root[i]);
                     }
                 }
-            }
-            catch
+            } catch
             {
                 Log.WriteLine(LogLevel.Error, "Errors occurred while examining storage schema signature.");
             }
@@ -207,8 +196,7 @@ namespace Trinity.Storage
             try
             {
                 File.WriteAllLines(Path.Combine(GetStorageSlot(true), c_celltype_signature_file_name), Global.storage_schema.CellTypeSignatures);
-            }
-            catch
+            } catch
             {
                 Log.WriteLine(LogLevel.Error, "Errors occurred while saving storage schema signature.");
             }

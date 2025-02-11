@@ -3,60 +3,59 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Text.RegularExpressions;
-using System.Threading.Tasks;
 
 namespace Trinity.TSL.Metagen
 {
     class VMState
     {
-        internal int    if_depth         = 0;
-        internal int    foreach_depth    = 0;
-        internal int    ip               = 0;
-        internal string target           = null;
-        internal bool   muted            = false;
+        internal int if_depth = 0;
+        internal int foreach_depth = 0;
+        internal int ip = 0;
+        internal string target = null;
+        internal bool muted = false;
 
         public VMState()
         {
-            if_depth      = 0;
+            if_depth = 0;
             foreach_depth = 0;
-            ip            = 0;
-            target        = null;
-            muted         = false;
+            ip = 0;
+            target = null;
+            muted = false;
         }
 
         public VMState(VMState vMState)
         {
-            if_depth      = vMState.if_depth;
+            if_depth = vMState.if_depth;
             foreach_depth = vMState.foreach_depth;
-            ip            = 0;
-            target        = vMState.target;
-            muted         = vMState.muted;
+            ip = 0;
+            target = vMState.target;
+            muted = vMState.muted;
         }
 
     }
 
     class VM
     {
-        private StringBuilder                     source;
-        private List<MetaToken>                   instructions;
-        private string                            name;
-        private Stack<MetaToken>                  stack;
-        private Stack<string>                     separator_stack;
-        private VMState                           state;
-        private Dictionary<string,string>         d_var;
-        private Dictionary<string,string>         d_var_explicit_host;
-        private Dictionary<string,string>         d_list;
-        private Dictionary<string,int>            d_list_iterator_depth;
-        private Dictionary<string,string>         d_list_explicit_host;
-        private Dictionary<string,int>            d_metavar_depth;
-        private Dictionary<MetaToken,MetaToken>   d_iteratable_target;
-        private List<string>                      l_literal_buffer;
-        private bool                              b_is_sub_vm;
-        private bool                              b_is_module;
+        private StringBuilder source;
+        private List<MetaToken> instructions;
+        private string name;
+        private Stack<MetaToken> stack;
+        private Stack<string> separator_stack;
+        private VMState state;
+        private Dictionary<string, string> d_var;
+        private Dictionary<string, string> d_var_explicit_host;
+        private Dictionary<string, string> d_list;
+        private Dictionary<string, int> d_list_iterator_depth;
+        private Dictionary<string, string> d_list_explicit_host;
+        private Dictionary<string, int> d_metavar_depth;
+        private Dictionary<MetaToken, MetaToken> d_iteratable_target;
+        private List<string> l_literal_buffer;
+        private bool b_is_sub_vm;
+        private bool b_is_module;
 
         private delegate void InstructionDelegate();
         private Dictionary<string, InstructionDelegate> d_instruction_method_table;
-        private static int                              s_MAX_LITERAL_LENGTH = 1024;
+        private static int s_MAX_LITERAL_LENGTH = 1024;
 
 
         private MetaToken current_instruction
@@ -66,28 +65,28 @@ namespace Trinity.TSL.Metagen
 
         public VM(StringBuilder src, List<MetaToken> insts, string name)
         {
-            source        = src;
-            instructions  = insts;
-            this.name     = name;
+            source = src;
+            instructions = insts;
+            this.name = name;
         }
 
         public VM(VM vM, StringBuilder sub_vm_literal, List<MetaToken> meta_tokens)
         {
-            source                = sub_vm_literal;
-            instructions          = meta_tokens;
-            name         = vM.name;
-            stack                 = new Stack<MetaToken>();
-            separator_stack       = new Stack<string>(vM.separator_stack);
-            state                 = new VMState(vM.state);
-            d_var                 = new Dictionary<string, string>(vM.d_var);
-            d_var_explicit_host   = new Dictionary<string, string>(vM.d_var_explicit_host);
-            d_list                = new Dictionary<string, string>(vM.d_list);
+            source = sub_vm_literal;
+            instructions = meta_tokens;
+            name = vM.name;
+            stack = new Stack<MetaToken>();
+            separator_stack = new Stack<string>(vM.separator_stack);
+            state = new VMState(vM.state);
+            d_var = new Dictionary<string, string>(vM.d_var);
+            d_var_explicit_host = new Dictionary<string, string>(vM.d_var_explicit_host);
+            d_list = new Dictionary<string, string>(vM.d_list);
             d_list_iterator_depth = new Dictionary<string, int>(vM.d_list_iterator_depth);
-            d_list_explicit_host  = new Dictionary<string, string>(vM.d_list_explicit_host);
-            d_metavar_depth       = new Dictionary<string, int>(vM.d_metavar_depth);
-            d_iteratable_target   = new Dictionary<MetaToken, MetaToken>(vM.d_iteratable_target);
-            l_literal_buffer      = new List<string>();
-            b_is_sub_vm           = true;
+            d_list_explicit_host = new Dictionary<string, string>(vM.d_list_explicit_host);
+            d_metavar_depth = new Dictionary<string, int>(vM.d_metavar_depth);
+            d_iteratable_target = new Dictionary<MetaToken, MetaToken>(vM.d_iteratable_target);
+            l_literal_buffer = new List<string>();
+            b_is_sub_vm = true;
         }
 
         public void LITERAL()
@@ -105,8 +104,8 @@ namespace Trinity.TSL.Metagen
 
             separator_stack.Push(sep);
 
-            int end_idx                              = Find_END();
-            var iteratable                           = Find_LISTVAR();
+            int end_idx = Find_END();
+            var iteratable = Find_LISTVAR();
             d_iteratable_target[current_instruction] = iteratable;
 
             //if (iteratable.text[0].Contains("array"))
@@ -155,9 +154,9 @@ namespace Trinity.TSL.Metagen
         {
             if (argc() > 2)//Find explicit host
             {
-                string explicit_host        = arg(2);
-                Regex explicit_host_rgx     = new Regex(@"MemberOf\s*=\s*""(?<host>.*)""");
-                Match explicit_host_match   = explicit_host_rgx.Match(explicit_host);
+                string explicit_host = arg(2);
+                Regex explicit_host_rgx = new Regex(@"MemberOf\s*=\s*""(?<host>.*)""");
+                Match explicit_host_match = explicit_host_rgx.Match(explicit_host);
                 if (!explicit_host_match.Success)
                     throw new Exception("MAP_VAR syntax error");
                 return explicit_host_match.Groups["host"].ToString();
@@ -197,8 +196,7 @@ namespace Trinity.TSL.Metagen
             if (b_is_sub_vm)
             {
                 OutputMetaStringToTemplate(meta_code);
-            }
-            else
+            } else
             {
                 meta_code = META_GetString(meta_code);
                 OutputMetaStringToTemplate(meta_code);
@@ -213,8 +211,7 @@ namespace Trinity.TSL.Metagen
             if (b_is_sub_vm)
             {
                 OutputMetaStringToTemplate(meta_code);
-            }
-            else
+            } else
             {
                 meta_code = META_GetString(meta_code);
                 OutputMetaStringToTemplate(meta_code);
@@ -237,7 +234,7 @@ namespace Trinity.TSL.Metagen
 
         private string META_TranslateMapVar(string meta_code)
         {
-            Regex map_var_rgx  = new Regex(@"\$[\w|\d|_]+");
+            Regex map_var_rgx = new Regex(@"\$[\w|\d|_]+");
             foreach (Match m in map_var_rgx.Matches(meta_code))
             {
                 var name = m.Value.Substring(1);
@@ -253,8 +250,8 @@ namespace Trinity.TSL.Metagen
             Regex meta_var_rgx = new Regex(@"\%[\w|\d|_]+");
             foreach (Match m in meta_var_rgx.Matches(meta_code))
             {
-                var name  = m.Value.Substring(1);
-                name      = name + "_" + d_metavar_depth[name];
+                var name = m.Value.Substring(1);
+                name = name + "_" + d_metavar_depth[name];
                 meta_code = meta_code.Replace(m.Value, name);
             }
             return meta_code;
@@ -290,7 +287,7 @@ namespace Trinity.TSL.Metagen
             string list_prefix = LISTVAR_GetListName(var_name);
             string result;
 
-            if(!d_var.TryGetValue(var_name, out result))
+            if (!d_var.TryGetValue(var_name, out result))
             {
                 throw new Exception("META_GetVar: undefined variable " + var_name);
             }
@@ -322,8 +319,7 @@ namespace Trinity.TSL.Metagen
             try
             {
                 return "(*(" + META_GetList(host) + "))[" + META_ForeachIteratorName(META_GetListDepth(host)) + "]->" + d_list[list_name];
-            }
-            catch /* the host is standalone. */
+            } catch /* the host is standalone. */
             {
                 return META_GetVar(host) + "->" + d_list[list_name];
             }
@@ -337,8 +333,7 @@ namespace Trinity.TSL.Metagen
                 if (element_name.Contains("$$"))
                 {
                     result = element_name.Replace("$$", result);
-                }
-                else
+                } else
                 {
                     result += "->" + element_name;
                 }
@@ -354,8 +349,8 @@ namespace Trinity.TSL.Metagen
         private string META_GetListSize(MetaToken listvar)
         {
             var list_prefix = LISTVAR_GetListName(listvar.text[0]);
-            var list_var    = META_GetList(list_prefix);
-            return "("+list_var+")->size()";
+            var list_var = META_GetList(list_prefix);
+            return "(" + list_var + ")->size()";
         }
 
         private MetaToken META_GetIteratable()
@@ -422,22 +417,20 @@ namespace Trinity.TSL.Metagen
 
         public void TEMPLATE()
         {
-            var template    = arg(0);
-            var var_prefix  = VAR_prefix(template);
+            var template = arg(0);
+            var var_prefix = VAR_prefix(template);
             var list_prefix = LISTVAR_GetListName(template);
             try
             {
                 if (var_prefix == null)
                 {
                     OutputMetaStringToTemplate(META_GetString(META_GetVar(template)));
-                }
-                else
+                } else
                 {
                     OutputMetaStringToTemplate(META_GetString(META_GetVar(var_prefix)));
                     OutputLiteralToTemplate(template.Substring(var_prefix.Length));
                 }
-            }
-            catch (Exception)
+            } catch (Exception)
             {
                 //Console.Write("\nWarning: Unrecognized template '{0}', output literal instead.", template);
                 OutputLiteralToTemplate(template);
@@ -446,7 +439,7 @@ namespace Trinity.TSL.Metagen
 
         public void LITERAL_OUTPUT()
         {
-            var template    = META_Translate(arg(0));
+            var template = META_Translate(arg(0));
             OutputLiteralToTemplate(template);
         }
 
@@ -460,8 +453,7 @@ namespace Trinity.TSL.Metagen
     ModuleContext module_ctx;
     module_ctx.m_stack_depth = context->m_stack_depth + 1;
 ";
-            }
-            else
+            } else
             {
                 module_call_code = @"
 {
@@ -597,14 +589,13 @@ namespace Trinity
         public void Execute()
         {
             b_is_module = IsModule();
-            var target  = FindTarget();
+            var target = FindTarget();
 
             if (b_is_module)
             {
                 GenerateModulePrologue();
                 instructions.FocusOnModule();
-            }
-            else
+            } else
             {
                 GenerateTemplatePrologue();
             }
@@ -616,8 +607,7 @@ namespace Trinity
             if (b_is_module)
             {
                 GenerateModuleEpilogue();
-            }
-            else
+            } else
             {
                 GenerateTemplateEpilogue();
             }
@@ -633,16 +623,14 @@ namespace Trinity
                 {
                     if (current_instruction.type == MetaType.MUTE_END)
                         state.muted = false;
-                }
-                else
+                } else
                 {
                     //var func = typeof(VM).GetMethod(current_instruction.type.ToString());
                     try
                     {
                         //func.Invoke(this, null);
                         d_instruction_method_table[current_instruction.type.ToString()]();
-                    }
-                    catch
+                    } catch
                     {
                         Console.WriteLine("Current instruction:");
                         Console.WriteLine(current_instruction);
@@ -696,7 +684,7 @@ namespace Trinity
                         OutputToMeta("if (" +
                         META_ForeachIteratorName() + " < " +
                         META_GetListSize(d_iteratable_target[inst]) + " - 1)");
-                        OutputMetaStringToTemplate('"'+sep+'"');
+                        OutputMetaStringToTemplate('"' + sep + '"');
                     }
                     --state.foreach_depth;
                     break;
@@ -786,18 +774,18 @@ namespace Trinity
 
         private void Reset()
         {
-            stack                     = new Stack<MetaToken>();
-            separator_stack           = new Stack<string>();
-            state                     = new VMState();
-            d_var                     = new Dictionary<string, string>();
-            d_var_explicit_host       = new Dictionary<string, string>();
-            d_list                    = new Dictionary<string, string>();
-            d_list_iterator_depth     = new Dictionary<string, int>();
-            d_list_explicit_host      = new Dictionary<string, string>();
-            d_metavar_depth           = new Dictionary<string, int>();//TODO should be able to pop meta var?
-            d_iteratable_target       = new Dictionary<MetaToken, MetaToken>();
-            l_literal_buffer          = new List<string>();
-            b_is_sub_vm               = false;
+            stack = new Stack<MetaToken>();
+            separator_stack = new Stack<string>();
+            state = new VMState();
+            d_var = new Dictionary<string, string>();
+            d_var_explicit_host = new Dictionary<string, string>();
+            d_list = new Dictionary<string, string>();
+            d_list_iterator_depth = new Dictionary<string, int>();
+            d_list_explicit_host = new Dictionary<string, string>();
+            d_metavar_depth = new Dictionary<string, int>();//TODO should be able to pop meta var?
+            d_iteratable_target = new Dictionary<MetaToken, MetaToken>();
+            l_literal_buffer = new List<string>();
+            b_is_sub_vm = false;
         }
 
         private void FlushLiteralBuffer()
@@ -819,10 +807,10 @@ namespace Trinity
              *     unless it follows a '}', or #region, #endregion.
              */
             var text = string.Join("", l_literal_buffer);
-            var rgx  = new Regex(@"(?:\r?\n){2,}");
-            text     = rgx.Replace(text, "\r\n");
-            rgx      = new Regex(@"(?<!\}|\#.*)\r\n\s*\r\n");
-            text     = rgx.Replace(text, "\r\n");
+            var rgx = new Regex(@"(?:\r?\n){2,}");
+            text = rgx.Replace(text, "\r\n");
+            rgx = new Regex(@"(?<!\}|\#.*)\r\n\s*\r\n");
+            text = rgx.Replace(text, "\r\n");
 
             /**
              * We chop literals into chunks of max size s_MAX_LITERAL_LENGTH.
@@ -839,8 +827,7 @@ namespace Trinity
                 {
                     source.Append(text.Substring(pos, len));
                     len = 0;
-                }
-                else
+                } else
                 {
                     source.Append(text.Substring(pos, s_MAX_LITERAL_LENGTH));
                     len -= s_MAX_LITERAL_LENGTH;
@@ -857,7 +844,7 @@ namespace Trinity
         {
             if (0 == text.Count(x => !char.IsWhiteSpace(x)))
             {
-                if(text.Contains('\n'))
+                if (text.Contains('\n'))
                     return;
             }
             l_literal_buffer.Add(text);

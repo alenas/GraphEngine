@@ -3,15 +3,7 @@
 // Licensed under the MIT license. See LICENSE.md file in the project root for full license information.
 //
 using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Runtime.CompilerServices;
 using System.Runtime.InteropServices;
-using System.Text;
-using System.Threading;
-using System.Threading.Tasks;
-using Trinity.Diagnostics;
-using Trinity.Network.Sockets;
 
 namespace Trinity.Network
 {
@@ -79,7 +71,7 @@ namespace Trinity.Network
 
         public static void StartTrinityServer(UInt16 port)
         {
-            if(CNativeNetwork.StartSocketServer(port) == -1)
+            if (CNativeNetwork.StartSocketServer(port) == -1)
             {
                 throw new System.Net.Sockets.SocketException();
             }

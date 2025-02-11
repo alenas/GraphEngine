@@ -3,10 +3,7 @@ using System.Collections.Generic;
 using System.Globalization;
 using System.Linq;
 using System.Linq.Expressions;
-using System.Runtime.CompilerServices;
-using System.Text;
 using System.Text.RegularExpressions;
-using System.Threading.Tasks;
 
 namespace Trinity.TSL.Metagen
 {
@@ -21,10 +18,10 @@ namespace Trinity.TSL.Metagen
         internal delegate MetaToken META_TOKEN_GEN_FUNC(string literal, int startIdx, int length);
         internal static void InsertFromRegex(this List<MetaToken> tokens, string literal, Expression<Func<Regex>> rgx_func)
         {
-            var rgx      = rgx_func.Compile()();
+            var rgx = rgx_func.Compile()();
             var rgx_name = rgx_func.ToString();
-            int idx      = rgx_name.LastIndexOf('.') + 1;
-            int len      = rgx_name.Length - idx;
+            int idx = rgx_name.LastIndexOf('.') + 1;
+            int len = rgx_name.Length - idx;
             rgx_name = rgx_name.Substring(idx, len);
 
             foreach (var attr in typeof(MetaType).GetMember(rgx_name)[0].GetCustomAttributes(false))
@@ -49,10 +46,10 @@ namespace Trinity.TSL.Metagen
          */
         internal static void FocusOnModule(this List<MetaToken> tokens)
         {
-            int begin_idx      = tokens.FindIndex(t => t.type == MetaType.MODULE_BEGIN);
-            int end_idx        = tokens.FindIndex(t => t.type == MetaType.MODULE_END);
+            int begin_idx = tokens.FindIndex(t => t.type == MetaType.MODULE_BEGIN);
+            int end_idx = tokens.FindIndex(t => t.type == MetaType.MODULE_END);
 
-            int module_size    = end_idx - begin_idx + 1;
+            int module_size = end_idx - begin_idx + 1;
             int end_slice_size = tokens.Count - module_size - begin_idx + 1;
 
             tokens.RemoveRange(0, begin_idx);
@@ -77,9 +74,9 @@ namespace Trinity.TSL.Metagen
                 }
                 return ret;
             });
-            for (int i=1; i<tokens.Count; ++i)
+            for (int i = 1; i < tokens.Count; ++i)
             {
-                if (tokens[i-1].startIndex + tokens[i-1].length >= tokens[i].startIndex + tokens[i].length)
+                if (tokens[i - 1].startIndex + tokens[i - 1].length >= tokens[i].startIndex + tokens[i].length)
                 {
                     tokens.RemoveAt(i);
                     --i;
@@ -159,8 +156,7 @@ namespace Trinity.TSL.Metagen
             if (count >= 0 && list.Count != count)
             {
                 Throw(memberName + " require " + count + " parameters, got " + list.Count);
-            }
-            else if (count < 0 && list.Count + count > 0)
+            } else if (count < 0 && list.Count + count > 0)
             {
                 Throw(memberName + ": too many parameters, at most " + (-count) + " got " + list.Count);
             }
@@ -176,8 +172,8 @@ namespace Trinity.TSL.Metagen
         static List<string> CaptureArguments(string text, int startIdx, int len)
         {
 
-            List<string> ret     = new List<string>();
-            text                 = text.Substring(startIdx, len);
+            List<string> ret = new List<string>();
+            text = text.Substring(startIdx, len);
 
             /**
              * The meta call is in the form of [HEAD]METHOD_IDENTIFIER(...)[TAIL]
@@ -188,10 +184,10 @@ namespace Trinity.TSL.Metagen
              * Remove tail: remove [TAIL], also the postfix ')'
              */
 
-            Regex head_rgx       = new Regex(@"^[\/\*_\w\d\s\[]*\(?");
-            Regex tail_rgx       = new Regex(@"(\)?(\]|\*\/|;)|\))$");
-            text                 = head_rgx.Replace(text, "");
-            text                 = tail_rgx.Replace(text, "");
+            Regex head_rgx = new Regex(@"^[\/\*_\w\d\s\[]*\(?");
+            Regex tail_rgx = new Regex(@"(\)?(\]|\*\/|;)|\))$");
+            text = head_rgx.Replace(text, "");
+            text = tail_rgx.Replace(text, "");
 
             /**
              * Parameter syntax:
@@ -199,9 +195,9 @@ namespace Trinity.TSL.Metagen
              *      2. param_outside_quote
              */
 
-            Regex param_regex  = new Regex(@"\s*(?:(?<param>(?:""(?:[^""\\]|\\.)*?"")|[^,""]+(?:""(?:[^""\\]|\\.)*?"")?)\s*[,]?\s*)*");
-            Match param_match  = param_regex.Match(text);
-            Group param_group  = param_match.Groups["param"];
+            Regex param_regex = new Regex(@"\s*(?:(?<param>(?:""(?:[^""\\]|\\.)*?"")|[^,""]+(?:""(?:[^""\\]|\\.)*?"")?)\s*[,]?\s*)*");
+            Match param_match = param_regex.Match(text);
+            Group param_group = param_match.Groups["param"];
 
             foreach (Capture param_capture in param_group.Captures)
             {
@@ -219,10 +215,10 @@ namespace Trinity.TSL.Metagen
         #region Factory
         public static MetaToken LITERAL(string text, int startIdx, int len)
         {
-            var meta           = new MetaToken();
-            meta.startIndex    = startIdx;
-            meta.length        = len;
-            meta.type          = MetaType.LITERAL;
+            var meta = new MetaToken();
+            meta.startIndex = startIdx;
+            meta.length = len;
+            meta.type = MetaType.LITERAL;
             meta.original_text = text;
             meta.text.Add(text.Substring(startIdx, len));
 
@@ -231,10 +227,10 @@ namespace Trinity.TSL.Metagen
 
         public static MetaToken END(string text, int startIdx, int len)
         {
-            var meta           = new MetaToken();
-            meta.startIndex    = startIdx;
-            meta.length        = len;
-            meta.type          = MetaType.END;
+            var meta = new MetaToken();
+            meta.startIndex = startIdx;
+            meta.length = len;
+            meta.type = MetaType.END;
             meta.original_text = text;
 
             return meta;
@@ -242,10 +238,10 @@ namespace Trinity.TSL.Metagen
 
         public static MetaToken TEMPLATE(string text, int startIdx, int len)
         {
-            var meta           = new MetaToken();
-            meta.startIndex    = startIdx;
-            meta.length        = len;
-            meta.type          = MetaType.TEMPLATE;
+            var meta = new MetaToken();
+            meta.startIndex = startIdx;
+            meta.length = len;
+            meta.type = MetaType.TEMPLATE;
             meta.original_text = text;
             meta.text.Add(text.Substring(startIdx, len));
 
@@ -254,19 +250,18 @@ namespace Trinity.TSL.Metagen
 
         public static MetaToken GeneralFactory(string text, int startIdx, int len, string type_str, int param_count)
         {
-            var meta            = new MetaToken();
-            var type            = (MetaType)Enum.Parse(typeof(MetaType), type_str);
-            meta.original_text  = text;
+            var meta = new MetaToken();
+            var type = (MetaType)Enum.Parse(typeof(MetaType), type_str);
+            meta.original_text = text;
             try
             {
                 meta.startIndex = startIdx;
-                meta.length     = len;
-                meta.type       = type;
-                meta.text       = CaptureArguments(text, startIdx, len);
+                meta.length = len;
+                meta.type = type;
+                meta.text = CaptureArguments(text, startIdx, len);
 
                 CheckParamCount(meta.text, param_count, type_str);
-            }
-            catch (Exception)
+            } catch (Exception)
             {
                 Console.WriteLine("Current token:");
                 Console.WriteLine(meta);

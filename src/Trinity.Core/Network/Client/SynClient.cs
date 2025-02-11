@@ -3,25 +3,13 @@
 // Licensed under the MIT license. See LICENSE.md file in the project root for full license information.
 //
 using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Net.Sockets;
 using System.Net;
-using System.IO;
-
-using Trinity;
-using Trinity.Core.Lib;
-using Trinity.Storage;
-using Trinity.Network.Messaging;
-using Trinity.Utilities;
-using Trinity.Diagnostics;
-using System.Runtime.InteropServices;
-using Trinity.Daemon;
-using Trinity.FaultTolerance;
-using System.Diagnostics;
 using System.Threading;
+
 using Trinity.Configuration;
+using Trinity.Core.Lib;
+using Trinity.FaultTolerance;
+using Trinity.Network.Messaging;
 
 namespace Trinity.Network.Client
 {
@@ -69,8 +57,7 @@ namespace Trinity.Network.Client
                 {
                     sock_connected = true;
                     break;
-                }
-                else
+                } else
                 {
                     sock_connected = false;
                     Thread.Sleep(10);

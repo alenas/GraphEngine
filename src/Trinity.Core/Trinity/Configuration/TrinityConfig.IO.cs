@@ -3,18 +3,16 @@
 // Licensed under the MIT license. See LICENSE.md file in the project root for full license information.
 //
 using System;
-using System.IO;
-using System.Net;
-using Trinity.Utilities;
-using Trinity.Diagnostics;
-using System.Reflection;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
+using System.Reflection;
 using System.Xml.Linq;
+
 using Trinity.Configuration;
-using System.Collections.ObjectModel;
-using System.Xml;
+using Trinity.Diagnostics;
 using Trinity.Network;
+using Trinity.Utilities;
 namespace Trinity
 {
     public static partial class TrinityConfig
@@ -49,8 +47,7 @@ namespace Trinity
             {
                 if (bool.Parse(value))
                     value = value.ToUpper();
-            }
-            catch { }
+            } catch { }
             node.SetAttributeValue(name, value);
         }
 
@@ -73,9 +70,9 @@ namespace Trinity
         /// <summary>
         /// Extracts config entries from the config instances.
         /// </summary>
-        internal static IEnumerable<XElement> ExtractConfigurationSettings()
+        internal static IEnumerable<ConfigurationEntry> ExtractConfigurationSettings()
         {
-            return GetConfigurationInstances().Select(ConfigurationEntry.ExtractConfigurationEntry).OfType<XElement>();
+            return GetConfigurationInstances().Select(ConfigurationEntry.ExtractConfigurationEntry);
         }
 
         /// <summary>
@@ -122,8 +119,7 @@ namespace Trinity
                     object singleton_instance = singleton_instance_prop.GetValue(null);
                     string entry_name = (string)entry_name_prop.GetValue(null);
                     return new ConfigurationInstance(singleton_instance, entry_name, type);
-                }
-                catch (Exception ex)
+                } catch (Exception ex)
                 {
                     Log.WriteLine(LogLevel.Error, "An error occured while searching for configuration sections: {0}", ex.ToString());
                 }
@@ -139,9 +135,9 @@ namespace Trinity
             SetAttribute(serverNode, ConfigurationConstants.Attrs.ASSEMBLY_PATH, server.AssemblyPath);
             SetAttribute(serverNode, ConfigurationConstants.Attrs.AVAILABILITY_GROUP, server.Id);
 
-            foreach(var entry in Enumerable.OfType<XElement>(server.Values))
+            foreach (var entry in server.Values)
             {
-                serverNode.Add(entry);
+                serverNode.Add((XElement)entry);
             }
 
             return serverNode;
@@ -191,8 +187,7 @@ namespace Trinity
             try
             {
                 SaveConfig(DefaultConfigFile);
-            }
-            catch (Exception e)
+            } catch (Exception e)
             {
                 Log.WriteLine(LogLevel.Error, e.Message);
                 throw;
@@ -214,8 +209,7 @@ namespace Trinity
 
                 if (File.Exists(configFile))
                 {
-                    try { File.Delete(configFile); }
-                    catch (Exception) { }
+                    try { File.Delete(configFile); } catch (Exception) { }
                 }
 
                 #region create basic xml info
@@ -230,7 +224,7 @@ namespace Trinity
 
                 foreach (var setting in ExtractConfigurationSettings())
                 {
-                    localNode.Add(setting);
+                    localNode.Add((XElement)setting);
                 }
 
                 foreach (var cluster in s_clusterConfigurations)
@@ -243,15 +237,14 @@ namespace Trinity
                         CreateServerSettingList(cluster.Value.Servers, ConfigurationConstants.Tags.SERVER),
                         CreateServerSettingList(cluster.Value.Proxies, ConfigurationConstants.Tags.PROXY));
 
-                    foreach(var server in servers)
+                    foreach (var server in servers)
                         clusterNode.Add(server);
 
                     rootNode.Add(clusterNode);
                 }
 
                 configXml.Save(configFile);
-            }
-            catch (Exception e)
+            } catch (Exception e)
             {
                 Log.WriteLine(LogLevel.Error, e.ToString());
                 throw;
@@ -266,8 +259,7 @@ namespace Trinity
             try
             {
                 LoadConfig_impl(DefaultConfigFile);
-            }
-            catch (Exception e)
+            } catch (Exception e)
             {
                 Log.WriteLine(LogLevel.Error, $"{nameof(TrinityConfig)}: {{0}}", e.ToString());
                 throw;
@@ -283,8 +275,7 @@ namespace Trinity
             try
             {
                 LoadConfig_impl(configFile);
-            }
-            catch (Exception e)
+            } catch (Exception e)
             {
                 Log.WriteLine(LogLevel.Error, $"{nameof(TrinityConfig)}: {{0}}", e.ToString());
                 throw;
@@ -322,12 +313,10 @@ namespace Trinity
                 if (config.RootConfigVersion == ConfigurationConstants.Values.LEGACYVER)
                 {
                     LoadConfigLegacy(trinity_config_file);
-                }
-                else if (config.RootConfigVersion == ConfigurationConstants.Values.CURRENTVER)
+                } else if (config.RootConfigVersion == ConfigurationConstants.Values.CURRENTVER)
                 {
                     LoadConfigCurrentVer(config);
-                }
-                else
+                } else
                 {
                     throw new TrinityConfigException("Unrecognized " + ConfigurationConstants.Attrs.CONFIG_VERSION);
                 }
@@ -385,7 +374,7 @@ namespace Trinity
             }
 
             // The default cluster config is the one without an Id.
-            s_current_cluster_config = 
+            s_current_cluster_config =
                 new ClusterConfig(
                     clusterSections.FirstOrDefault(IsDefaultClusterConfiguration) ??
                     new XElement(ConfigurationConstants.Tags.CLUSTER));

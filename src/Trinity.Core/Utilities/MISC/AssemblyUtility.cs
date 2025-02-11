@@ -4,8 +4,7 @@ using System.Diagnostics;
 using System.IO;
 using System.Linq;
 using System.Reflection;
-using System.Text;
-using System.Threading.Tasks;
+
 using Trinity.Diagnostics;
 
 namespace Trinity.Utilities
@@ -49,15 +48,13 @@ namespace Trinity.Utilities
                         {
                             stackFrame = new StackFrame(skipFrames);
                             if (stackFrame.GetMethod() == null) break;
-                        }
-                        catch { break; }
+                        } catch { break; }
 
                         try
                         {
                             var asm = stackFrame.GetMethod().Module.Assembly;
                             if (asm == trinity_asm) firstTrinityFrame = skipFrames;
-                        }
-                        catch { continue; }
+                        } catch { continue; }
                     }
 
                     for (int skipFrames = firstTrinityFrame + 1; ; skipFrames++)
@@ -67,8 +64,7 @@ namespace Trinity.Utilities
                         {
                             stackFrame = new StackFrame(skipFrames);
                             if (stackFrame.GetMethod() == null) break;
-                        }
-                        catch { break; }
+                        } catch { break; }
 
                         try
                         {
@@ -85,8 +81,7 @@ namespace Trinity.Utilities
                             var path = asm.Location;
                             my_assembly_path = System.IO.Path.GetDirectoryName(path) + Path.DirectorySeparatorChar;
                             break;
-                        }
-                        catch { continue; }
+                        } catch { continue; }
                     }
                 }
 #endif
@@ -114,8 +109,7 @@ namespace Trinity.Utilities
                 try
                 {
                     if (pred(asm)) return true;
-                }
-                catch { }
+                } catch { }
             }
 
             return false;
@@ -167,8 +161,7 @@ namespace Trinity.Utilities
                 {
                     ret.Add(type);
                 }
-            }
-            catch { }
+            } catch { }
             return ret;
         }
 
@@ -193,8 +186,7 @@ namespace Trinity.Utilities
                     {
                         satisfied_types.Add(type);
                     }
-                }
-                catch (Exception ex)
+                } catch (Exception ex)
                 {
                     Log.WriteLine(LogLevel.Verbose, "{0}", ex.ToString());
                 }
@@ -267,11 +259,9 @@ namespace Trinity.Utilities
                             {
                                 return instance;
                             }
-                        }
-                        catch { }
+                        } catch { }
                     }
-                }
-                catch (Exception ex)
+                } catch (Exception ex)
                 {
                     Log.WriteLine(LogLevel.Verbose, "{0}", ex.ToString());
                 }
@@ -295,8 +285,7 @@ namespace Trinity.Utilities
                     {
                         satisfied_instances.Add(instance);
                     }
-                }
-                catch { }
+                } catch { }
             }
 
             return satisfied_instances;
@@ -339,8 +328,7 @@ namespace Trinity.Utilities
                     newLoad = true;
                     Assembly.Load(r);
                     Log.WriteLine(LogLevel.Debug, $"{nameof(AssemblyUtility)}: {r.FullName} loaded.");
-                }
-                catch (Exception ex)
+                } catch (Exception ex)
                 {
                     Log.WriteLine(LogLevel.Debug, $"{nameof(AssemblyUtility)}: failed to load {r.FullName}: {{0}}", ex.ToString());
                 }
@@ -379,8 +367,7 @@ namespace Trinity.Utilities
                     {
                         return instance;
                     }
-                }
-                catch { }
+                } catch { }
             }
             throw new TypeLoadException("Could not load any class instance of " + typeof(TBase).Name);
         }
@@ -411,11 +398,9 @@ namespace Trinity.Utilities
                     try
                     {
                         action(assembly);
-                    }
-                    catch { }
+                    } catch { }
                 }
-            }
-            catch { }
+            } catch { }
         }
     }
 }

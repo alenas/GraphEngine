@@ -2,18 +2,17 @@
 // Copyright (c) Microsoft. All rights reserved.
 // Licensed under the MIT license. See LICENSE.md file in the project root for full license information.
 //
-using System;
-using System.Runtime.InteropServices;
 using System.ComponentModel;
+using System.Runtime.InteropServices;
 using System.Threading;
 
 namespace Trinity.Utilities
 {
     class HighPrecisionTimer
     {
-         [DllImport("Kernel32.dll")]
+        [DllImport("Kernel32.dll")]
         private static extern bool QueryPerformanceCounter(
-            out long lpPerformanceCount);
+           out long lpPerformanceCount);
 
         [DllImport("Kernel32.dll")]
         private static extern bool QueryPerformanceFrequency(
@@ -25,7 +24,7 @@ namespace Trinity.Utilities
         public HighPrecisionTimer()
         {
             startTime = 0;
-            stopTime  = 0;
+            stopTime = 0;
 
             if (QueryPerformanceFrequency(out freq) == false)
             {
@@ -51,7 +50,7 @@ namespace Trinity.Utilities
         {
             get
             {
-                return (double)(stopTime - startTime) / (double) freq;
+                return (double)(stopTime - startTime) / (double)freq;
             }
         }
     }

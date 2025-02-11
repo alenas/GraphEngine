@@ -1,15 +1,11 @@
 using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Trinity.Configuration
 {
     /// <summary>
     /// Represents a property of a configuration entry.
     /// </summary>
-    [AttributeUsage(AttributeTargets.Property, AllowMultiple=false, Inherited=false)]
+    [AttributeUsage(AttributeTargets.Property, AllowMultiple = false, Inherited = false)]
     public class ConfigSettingAttribute : Attribute
     {
         /// <summary>
@@ -30,12 +26,12 @@ namespace Trinity.Configuration
     /// <summary>
     /// Represents a public static instance configuration entry singleton.
     /// </summary>
-    [AttributeUsage(AttributeTargets.Property, AllowMultiple=false, Inherited=false)]
+    [AttributeUsage(AttributeTargets.Property, AllowMultiple = false, Inherited = false)]
     public class ConfigInstanceAttribute : Attribute { }
 
     /// <summary>
     /// Represents a static string property indicating the name of the configuration entry.
     /// </summary>
-    [AttributeUsage(AttributeTargets.Property, AllowMultiple=false, Inherited=false)]
+    [AttributeUsage(AttributeTargets.Property, AllowMultiple = false, Inherited = false)]
     public class ConfigEntryNameAttribute : Attribute { }
 }

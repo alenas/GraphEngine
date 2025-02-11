@@ -1,8 +1,4 @@
 using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Trinity.Storage
 {
@@ -21,7 +17,7 @@ namespace Trinity.Storage
             HighKey = highKey;
             Id = id;
         }
-        internal Chunk(){}
+        internal Chunk() { }
 
         public long LowKey { get; }
         public long HighKey { get; }

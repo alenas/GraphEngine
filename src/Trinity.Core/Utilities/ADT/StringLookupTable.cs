@@ -3,10 +3,6 @@
 // Licensed under the MIT license. See LICENSE.md file in the project root for full license information.
 //
 using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Trinity.Utilities
 {
@@ -17,8 +13,8 @@ namespace Trinity.Utilities
     public class StringLookupTable
     {
         string[] m_strings;
-        int[]    m_hashes;
-        int      m_len;
+        int[] m_hashes;
+        int m_len;
 
         /// <summary>
         /// Construct a string to int lookup table with the given strings.
@@ -26,12 +22,12 @@ namespace Trinity.Utilities
         /// <param name="strings">The strings to be placed in the lookup table.</param>
         public StringLookupTable(params string[] strings)
         {
-            m_len     = strings.Length;
+            m_len = strings.Length;
             m_strings = new string[m_len];
-            m_hashes  = new int[m_len];
+            m_hashes = new int[m_len];
 
             Array.Copy(strings, m_strings, m_len);
-            for (int i=0; i<m_len; ++i)
+            for (int i = 0; i < m_len; ++i)
             {
                 m_hashes[i] = m_strings[i].GetHashCode();
             }
@@ -45,7 +41,7 @@ namespace Trinity.Utilities
         public int Lookup(string input)
         {
             int hash = input.GetHashCode();
-            for (int i=0; i<m_len; ++i)
+            for (int i = 0; i < m_len; ++i)
             {
                 if (hash == m_hashes[i] && input == m_strings[i])
                     return i;

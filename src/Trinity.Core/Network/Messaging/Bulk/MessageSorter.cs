@@ -2,11 +2,8 @@
 // Copyright (c) Microsoft. All rights reserved.
 // Licensed under the MIT license. See LICENSE.md file in the project root for full license information.
 //
-using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using Trinity;
+
 using Trinity.Storage;
 
 namespace Trinity.Network.Messaging
@@ -39,7 +36,7 @@ namespace Trinity.Network.Messaging
         /// Constructs a MessageSorter using a given cell Id list.
         /// </summary>
         /// <param name="cellIdList">A list of cell Ids.</param>
-        public MessageSorter(List<long> cellIdList):this()
+        public MessageSorter(List<long> cellIdList) : this()
         {
             for (int i = 0; i < cellIdList.Count; i++)
             {

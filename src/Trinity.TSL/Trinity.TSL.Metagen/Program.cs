@@ -1,11 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.IO;
-using System.Linq;
-using System.Linq.Expressions;
 using System.Text;
-using System.Text.RegularExpressions;
-using System.Threading.Tasks;
 
 namespace Trinity.TSL.Metagen
 {
@@ -31,11 +27,10 @@ namespace Trinity.TSL.Metagen
 
             if (args.Length > 1)
             {
-                if(args[1] == "-force")
+                if (args[1] == "-force")
                 {
                     s_force_process = true;
-                }
-                else
+                } else
                 {
                     s_dest_root = Path.GetFullPath(args[1]);
                 }
@@ -67,15 +62,15 @@ namespace Trinity.TSL.Metagen
         {
             try
             {
-                filename              = Path.GetFullPath(filename);
-                string literal        = File.ReadAllText(filename);
-                string name           = Path.GetFileNameWithoutExtension(filename);
-                string dir_path       = Path.GetDirectoryName(filename).Substring(s_source_root.Length).Trim(Path.DirectorySeparatorChar);
+                filename = Path.GetFullPath(filename);
+                string literal = File.ReadAllText(filename);
+                string name = Path.GetFileNameWithoutExtension(filename);
+                string dir_path = Path.GetDirectoryName(filename).Substring(s_source_root.Length).Trim(Path.DirectorySeparatorChar);
 
                 dir_path = Path.Combine(s_dest_root, dir_path);
 
-                string targetFilename = Path.Combine(dir_path, Path.GetFileName(filename)+".cpp");
-                bool needProcess      = (File.GetLastWriteTime(targetFilename) < File.GetLastWriteTime(filename));
+                string targetFilename = Path.Combine(dir_path, Path.GetFileName(filename) + ".cpp");
+                bool needProcess = (File.GetLastWriteTime(targetFilename) < File.GetLastWriteTime(filename));
 
                 if (needProcess || s_force_process)
                 {
@@ -89,16 +84,15 @@ namespace Trinity.TSL.Metagen
 
                         File.WriteAllText(targetFilename, codegen);
                         PrintOK();
-                    }
-                    catch (Exception ex)
+                    } catch (Exception ex)
                     {
                         if (ex.Data.Contains("file_offset"))
                         {
                             Console.WriteLine("Context:");
 
                             int file_offset = (int)ex.Data["file_offset"];
-                            int begin       = file_offset - 100;
-                            int end         = file_offset + 100;
+                            int begin = file_offset - 100;
+                            int end = file_offset + 100;
                             if (begin < 0)
                                 begin = 0;
                             if (end > literal.Length)
@@ -115,13 +109,11 @@ namespace Trinity.TSL.Metagen
 
                         throw;
                     }
-                }
-                else
+                } else
                 {
                     Console.WriteLine("Skipping       {0}", filename);
                 }
-            }
-            catch (Exception ex)
+            } catch (Exception ex)
             {
                 Console.WriteLine("Error on file {0}", filename);
                 if (ex.InnerException != null)
@@ -139,8 +131,7 @@ namespace Trinity.TSL.Metagen
             {
                 Console.SetCursorPosition(Console.BufferWidth - 4, Console.CursorTop);
                 Console.Write("[OK]");
-            }
-            catch { Console.WriteLine(); }
+            } catch { Console.WriteLine(); }
         }
 
         /** 
@@ -153,8 +144,8 @@ namespace Trinity.TSL.Metagen
          */
         private static string GenerateCodeGen(string template_name, List<MetaToken> source_template)
         {
-            var codegen          = new StringBuilder();
-            var vm               = new VM(codegen, source_template, template_name);
+            var codegen = new StringBuilder();
+            var vm = new VM(codegen, source_template, template_name);
 
             vm.Execute();
 

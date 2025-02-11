@@ -10,7 +10,7 @@ using System.IO;
 using System.Runtime.CompilerServices;
 using System.Runtime.InteropServices;
 using System.Security;
-using Trinity.Configuration;
+
 using Trinity.Core.Lib;
 using Trinity.Diagnostics;
 using Trinity.Storage.Transaction;
@@ -31,8 +31,8 @@ namespace Trinity.Storage
     [StructLayout(LayoutKind.Sequential, Pack = 1, Size = sizeof(ulong) + 16 * 256)]
     internal unsafe struct TRINITY_IMAGE_SIGNATURE
     {
-        public ulong       IMAGE_VERSION;
-        public fixed byte  TRUNK_SIGNATURES[256 * 16];
+        public ulong IMAGE_VERSION;
+        public fixed byte TRUNK_SIGNATURES[256 * 16];
     }
 
     [StructLayout(LayoutKind.Sequential, Pack = 1, Size = 1 + 8 + 2 + 4)]
@@ -45,10 +45,10 @@ namespace Trinity.Storage
         /// </summary>
         static LOG_RECORD_HEADER() { TrinityC.Init(); }
 
-        public long   CELL_ID;
-        public int    CONTENT_LEN;
+        public long CELL_ID;
+        public int CONTENT_LEN;
         public ushort CELL_TYPE;
-        public byte   CHECKSUM; // 8-bit second-order check
+        public byte CHECKSUM; // 8-bit second-order check
 
         [DllImport(TrinityC.AssemblyName)]
         [SuppressUnmanagedCodeSecurity]
@@ -64,9 +64,9 @@ namespace Trinity.Storage
     [StructLayout(LayoutKind.Sequential, Pack = 1, Size = 8 + sizeof(ulong) + 16 * 256)]
     internal unsafe struct LOG_FILE_HEADER
     {
-        public fixed byte              LOG_MAGIC_HEAD[4];
-        public ushort                  LOG_VER_MINOR;
-        public ushort                  LOG_VER_MAJOR;
+        public fixed byte LOG_MAGIC_HEAD[4];
+        public ushort LOG_VER_MINOR;
+        public ushort LOG_VER_MAJOR;
         public TRINITY_IMAGE_SIGNATURE LOG_ASSOCIATED_IMAGE_SIGNATURE;
 
         public static LOG_FILE_HEADER New()
@@ -111,11 +111,11 @@ namespace Trinity.Storage
 
     public unsafe partial class LocalMemoryStorage
     {
-        private void*                  m_logfile                       = null;
-        private string                 m_logfile_path                  = null;
-        private const string           c_logfile_name                  = "primary_storage_log";
-        private const string           c_celltype_signature_file_name  = "cell_type.sig";
-        private const string           c_logfile_path                  = "write_ahead_log";
+        private void* m_logfile = null;
+        private string m_logfile_path = null;
+        private const string c_logfile_name = "primary_storage_log";
+        private const string c_celltype_signature_file_name = "cell_type.sig";
+        private const string c_logfile_path = "write_ahead_log";
 
         #region Write-ahead-log logic
         /// <summary>
@@ -157,8 +157,7 @@ namespace Trinity.Storage
                      * So we proceed to create a new one.  
                      */
                     CreateWriteAheadLogFile();
-                }
-                catch (Exception ex)
+                } catch (Exception ex)
                 {
                     Log.WriteLine(LogLevel.Warning, "Failed to setup the log-ahead directory: {0}", ex);
                 }
@@ -269,13 +268,12 @@ namespace Trinity.Storage
 
                 Log.WriteLine(LogLevel.Info, "Moving current log file {0} to {1}", path, path_old);
                 File.Move(path, path_old);
-            }
-            catch (Exception ex)
+            } catch (Exception ex)
             {
                 Log.WriteLine(LogLevel.Error, "Cannot backup the log file {0}: {1}", path, ex);
             }
         }
-        
+
         /// <summary>
         /// Drops the current log file and clean up the member variables.
         /// </summary>
@@ -289,7 +287,7 @@ namespace Trinity.Storage
                 if (m_logfile == null)
                     return;
 
-                Debug.Assert(m_logfile      != null);
+                Debug.Assert(m_logfile != null);
                 Debug.Assert(m_logfile_path != null);
 
                 Log.WriteLine(LogLevel.Info, "Dropping write-ahead-log file {0}", m_logfile_path);
@@ -302,8 +300,7 @@ namespace Trinity.Storage
                 try
                 {
                     File.Delete(m_logfile_path);
-                }
-                catch (Exception ex)
+                } catch (Exception ex)
                 {
                     Log.WriteLine(LogLevel.Error, "Failed to delete the log file: {0}", ex);
                 }
@@ -327,15 +324,14 @@ namespace Trinity.Storage
                 return null;
             }
 
-            string log_file_dir  = Path.Combine(GetStorageSlot(true), c_logfile_path);
-            string log_ver_str   = current_sig.IMAGE_VERSION == ulong.MaxValue? "initial" : current_sig.IMAGE_VERSION.ToString(CultureInfo.InvariantCulture);
+            string log_file_dir = Path.Combine(GetStorageSlot(true), c_logfile_path);
+            string log_ver_str = current_sig.IMAGE_VERSION == ulong.MaxValue ? "initial" : current_sig.IMAGE_VERSION.ToString(CultureInfo.InvariantCulture);
             string log_file_path = Path.Combine(log_file_dir, String.Format(CultureInfo.InvariantCulture, "{0}_{1}.dat", c_logfile_name, log_ver_str));
 
             try
             {
                 FileUtility.CompletePath(log_file_dir, create_nonexistent: true);
-            }
-            catch (Exception ex)
+            } catch (Exception ex)
             {
                 Log.WriteLine(LogLevel.Error, "Error trying to complete log file directory: {0}", ex);
             }
@@ -360,14 +356,14 @@ namespace Trinity.Storage
 
                 Log.WriteLine(LogLevel.Debug, "Loading write-ahead log file {0}", path);
 
-                LOG_FILE_HEADER         header              = LOG_FILE_HEADER.New();
-                TRINITY_IMAGE_SIGNATURE current_sig         = new TRINITY_IMAGE_SIGNATURE();
-                LOG_RECORD_HEADER       record_header       = new LOG_RECORD_HEADER();
-                long                    record_cnt          = 0;
-                byte[]                  cell_buff           = new byte[128];
-                void*                   new_fp              = null;
-                bool                    ver_compatible      = true;
-                bool                    img_compatible      = true;
+                LOG_FILE_HEADER header = LOG_FILE_HEADER.New();
+                TRINITY_IMAGE_SIGNATURE current_sig = new TRINITY_IMAGE_SIGNATURE();
+                LOG_RECORD_HEADER record_header = new LOG_RECORD_HEADER();
+                long record_cnt = 0;
+                byte[] cell_buff = new byte[128];
+                void* new_fp = null;
+                bool ver_compatible = true;
+                bool img_compatible = true;
 
                 GetTrinityImageSignature(&current_sig);
 
@@ -404,8 +400,7 @@ namespace Trinity.Storage
                         Log.WriteLine(LogLevel.Warning, "Found incompatible empty write-ahead-log file, ignoring.");
                         CStdio.C_fclose(new_fp);
                         return;
-                    }
-                    else if (this.CellCount != 0)
+                    } else if (this.CellCount != 0)
                     {
                         goto load_incompatible;
                     }
@@ -421,11 +416,10 @@ namespace Trinity.Storage
                         /* Ensure space for the cell buffer */
                         if (record_header.CONTENT_LEN > cell_buff.Length)
                         {
-                            if (record_header.CONTENT_LEN < 1<<20)
+                            if (record_header.CONTENT_LEN < 1 << 20)
                             {
                                 cell_buff = new byte[record_header.CONTENT_LEN * 2];
-                            }
-                            else
+                            } else
                             {
                                 cell_buff = new byte[record_header.CONTENT_LEN];
                             }
@@ -447,8 +441,7 @@ namespace Trinity.Storage
 
                             this.SaveCell(record_header.CELL_ID, p_buff, record_header.CONTENT_LEN, record_header.CELL_TYPE);
                         }
-                    }
-                    else /* if (record_header.CONTENT_LEN < 0) */
+                    } else /* if (record_header.CONTENT_LEN < 0) */
                     {
                         if (false == LOG_RECORD_HEADER.CWriteAheadLogValidateChecksum(&record_header, null))
                         {
@@ -463,8 +456,8 @@ namespace Trinity.Storage
 
                 goto load_success;
 
-////////////////////////////////////////
-load_incompatible:
+            ////////////////////////////////////////
+            load_incompatible:
 
                 if (ver_compatible)
                 {
@@ -478,8 +471,8 @@ load_incompatible:
 
                 goto load_fail;
 
-////////////////////////////////////////
-load_success:
+            ////////////////////////////////////////
+            load_success:
 
                 Log.WriteLine(LogLevel.Info, "Write-ahead-log successfully loaded. Recovered {0} records.", record_cnt);
 
@@ -496,13 +489,11 @@ load_success:
                     try
                     {
                         File.Delete(path);
-                    }
-                    catch (Exception ex)
+                    } catch (Exception ex)
                     {
                         Log.WriteLine(LogLevel.Error, "Failed to delete the old logs: {0}", ex);
                     }
-                }
-                else
+                } else
                 {
                     /* Save storage failed. */
                     Log.WriteLine(LogLevel.Fatal, "Failed to save the recovered storage. The old log is retained");
@@ -511,8 +502,8 @@ load_success:
 
                 return;
 
-////////////////////////////////////////
-load_fail:
+            ////////////////////////////////////////
+            load_fail:
 
                 if (new_fp != null)
                     CStdio.C_fclose(new_fp);
@@ -522,7 +513,7 @@ load_fail:
 
         private unsafe void _update_write_ahead_log_file(string path, void* fp)
         {
-            m_logfile      = fp;
+            m_logfile = fp;
             m_logfile_path = path;
             CLocalMemoryStorage.CSetWriteAheadLogFile(fp);
         }
@@ -575,7 +566,7 @@ load_fail:
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public TrinityErrorCode SaveCell(CellAccessOptions writeAheadLogOptions, long cellId, byte* buff, int cellSize, ushort cellType)
         {
-            TrinityErrorCode eResult= CLocalMemoryStorage.CLoggedSaveCell(cellId, buff, cellSize, cellType, writeAheadLogOptions);
+            TrinityErrorCode eResult = CLocalMemoryStorage.CLoggedSaveCell(cellId, buff, cellSize, cellType, writeAheadLogOptions);
             return eResult;
         }
 
@@ -610,7 +601,7 @@ load_fail:
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public TrinityErrorCode AddCell(CellAccessOptions writeAheadLogOptions, long cellId, byte* buff, int cellSize, ushort cellType)
         {
-            TrinityErrorCode eResult= CLocalMemoryStorage.CLoggedAddCell(cellId, buff, cellSize, cellType, writeAheadLogOptions);
+            TrinityErrorCode eResult = CLocalMemoryStorage.CLoggedAddCell(cellId, buff, cellSize, cellType, writeAheadLogOptions);
             return eResult;
         }
 
@@ -625,7 +616,7 @@ load_fail:
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public TrinityErrorCode UpdateCell(CellAccessOptions writeAheadLogOptions, long cellId, byte* buff, int cellSize)
         {
-            TrinityErrorCode eResult= CLocalMemoryStorage.CLoggedUpdateCell(cellId, buff, cellSize, writeAheadLogOptions);
+            TrinityErrorCode eResult = CLocalMemoryStorage.CLoggedUpdateCell(cellId, buff, cellSize, writeAheadLogOptions);
             return eResult;
         }
 
@@ -656,7 +647,7 @@ load_fail:
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public TrinityErrorCode RemoveCell(CellAccessOptions writeAheadLogOptions, long cellId)
         {
-            TrinityErrorCode eResult= CLocalMemoryStorage.CLoggedRemoveCell(cellId, writeAheadLogOptions);
+            TrinityErrorCode eResult = CLocalMemoryStorage.CLoggedRemoveCell(cellId, writeAheadLogOptions);
             return eResult;
         }
 
@@ -694,7 +685,7 @@ load_fail:
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public TrinityErrorCode SaveCell(LocalTransactionContext tx, CellAccessOptions writeAheadLogOptions, long cellId, byte* buff, int cellSize, ushort cellType)
         {
-            TrinityErrorCode eResult= CLocalMemoryStorage.TxCLoggedSaveCell(tx.m_pctx, cellId, buff, cellSize, cellType, writeAheadLogOptions);
+            TrinityErrorCode eResult = CLocalMemoryStorage.TxCLoggedSaveCell(tx.m_pctx, cellId, buff, cellSize, cellType, writeAheadLogOptions);
             return eResult;
         }
         #endregion

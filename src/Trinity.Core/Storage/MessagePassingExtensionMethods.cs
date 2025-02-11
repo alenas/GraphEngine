@@ -1,8 +1,3 @@
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using Trinity.Core.Lib;
 using Trinity.Network;
 using Trinity.Network.Messaging;
@@ -59,12 +54,12 @@ namespace Trinity.Storage
             {
                 TrinityResponse response;
                 storage.SendMessage(tm, out response);
-                PointerHelper sp     = PointerHelper.New(response.Buffer + response.Offset);
+                PointerHelper sp = PointerHelper.New(response.Buffer + response.Offset);
                 int name_string_len = *sp.ip++;
-                name                = BitHelper.GetString(sp.bp, name_string_len * 2);
-                sp.cp              += name_string_len;
-                int sig_string_len  = *sp.ip++;
-                signature           = BitHelper.GetString(sp.bp, sig_string_len * 2);
+                name = BitHelper.GetString(sp.bp, name_string_len * 2);
+                sp.cp += name_string_len;
+                int sig_string_len = *sp.ip++;
+                signature = BitHelper.GetString(sp.bp, sig_string_len * 2);
 
                 response.Dispose();
             }
@@ -85,40 +80,38 @@ namespace Trinity.Storage
                 size: sizeof(int) + sizeof(char) * moduleName.Length))
             {
                 PointerHelper sp = PointerHelper.New(tm.Buffer + TrinityMessage.Offset);
-                *sp.ip++         = moduleName.Length;
+                *sp.ip++ = moduleName.Length;
 
                 BitHelper.WriteString(moduleName, sp.bp);
                 TrinityResponse response = null;
                 bool ret;
-                try 
-                { 
-                    storage.SendMessage(tm, out response); 
+                try
+                {
+                    storage.SendMessage(tm, out response);
                     ret = (response.ErrorCode == TrinityErrorCode.E_SUCCESS);
-                }
-                catch(System.IO.IOException) 
-                { 
+                } catch (System.IO.IOException)
+                {
                     ret = false;
                 }
 
                 if (ret)
                 {
-                    sp.bp             = response.Buffer + response.Offset;
-                    int synReq_msg    = *sp.ip++;
+                    sp.bp = response.Buffer + response.Offset;
+                    int synReq_msg = *sp.ip++;
                     int synReqRsp_msg = *sp.ip++;
-                    int asynReq_msg   = *sp.ip++;
-                    int asynReqRsp_msg= *sp.ip++;
+                    int asynReq_msg = *sp.ip++;
+                    int asynReqRsp_msg = *sp.ip++;
 
-                    synReqOffset      = (ushort)synReq_msg;
-                    synReqRspOffset   = (ushort)synReqRsp_msg;
-                    asynReqOffset     = (ushort)asynReq_msg;
-                    asynReqRspOffset  = (ushort)asynReqRsp_msg;
-                }
-                else
+                    synReqOffset = (ushort)synReq_msg;
+                    synReqRspOffset = (ushort)synReqRsp_msg;
+                    asynReqOffset = (ushort)asynReq_msg;
+                    asynReqRspOffset = (ushort)asynReqRsp_msg;
+                } else
                 {
-                    synReqOffset      = 0;
-                    synReqRspOffset   = 0;
-                    asynReqOffset     = 0;
-                    asynReqRspOffset  = 0;
+                    synReqOffset = 0;
+                    synReqRspOffset = 0;
+                    asynReqOffset = 0;
+                    asynReqRspOffset = 0;
                 }
 
 

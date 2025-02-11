@@ -3,11 +3,7 @@
 // Licensed under the MIT license. See LICENSE.md file in the project root for full license information.
 //
 using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 using System.IO;
-using System.Reflection;
 
 namespace Trinity.Utilities
 {
@@ -24,12 +20,11 @@ namespace Trinity.Utilities
                 if (trinity_path != null)
                 {
                     trinity_home = Path.GetFullPath(FileUtility.CompletePath(trinity_path, false) + "..\\");
-                }
-                else
+                } else
                 {
                     if (File.Exists(trinity_flag_file))
                     {
-                        trinity_home = FileUtility.CompletePath(File.ReadAllText(trinity_flag_file).Trim(),false);
+                        trinity_home = FileUtility.CompletePath(File.ReadAllText(trinity_flag_file).Trim(), false);
                     }
                 }
             }
@@ -37,8 +32,7 @@ namespace Trinity.Utilities
             if (trinity_home == null)
             {
                 return null;
-            }
-            else
+            } else
             {
                 return FileUtility.CompletePath(trinity_home, false);
             }
@@ -55,8 +49,7 @@ namespace Trinity.Utilities
                 if (trinity_home != null)
                 {
                     trinity_path = FileUtility.CompletePath(trinity_home, false) + "bin\\";
-                }
-                else
+                } else
                 {
                     if (File.Exists(trinity_flag_file))
                     {
@@ -68,8 +61,7 @@ namespace Trinity.Utilities
             if (trinity_path == null)
             {
                 return null;
-            }
-            else
+            } else
             {
                 return FileUtility.CompletePath(trinity_path, false);
             }

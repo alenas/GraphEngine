@@ -41,8 +41,8 @@ Install g++, cmake, and libssl-dev. For example, on Ubuntu, simply run
 sudo apt update && sudo apt install g++ cmake libssl-dev
 ```
 
-Install [.NET SDK x64 8.0][dotnet-on-linux]. For example, on Ubuntu 22.04, run
-`sudo apt update && sudo apt install -y dotnet-sdk-8.0`.
+Install [.NET SDK x64 9.0][dotnet-on-linux]. For example, on Ubuntu 22.04, run
+`sudo apt update && sudo apt install -y dotnet-sdk-9.0`.
 Then, build GraphEngine with the following command:
 
 ```shell

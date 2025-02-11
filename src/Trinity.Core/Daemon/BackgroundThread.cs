@@ -2,18 +2,10 @@
 // Copyright (c) Microsoft. All rights reserved.
 // Licensed under the MIT license. See LICENSE.md file in the project root for full license information.
 //
-using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading;
-using System.Diagnostics;
-using Trinity;
 using System.Runtime.InteropServices;
-using System.Threading.Tasks;
-using Trinity.Storage;
-using Trinity.Core.Lib;
-using System.Runtime.CompilerServices;
+using System.Threading;
+
 using Trinity.Diagnostics;
 
 namespace Trinity.Daemon
@@ -116,8 +108,7 @@ namespace Trinity.Daemon
                         lock (_lock)
                         {
                             TimerInterval = ret;
-                            try { timer.Change(0, ret); }
-                            catch { }
+                            try { timer.Change(0, ret); } catch { }
                         }
                     }
                 }

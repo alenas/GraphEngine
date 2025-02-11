@@ -5,21 +5,17 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
-using System.Linq;
-using System.Runtime.CompilerServices;
 using System.Runtime.InteropServices;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Trinity.Storage
 {
     [StructLayout(LayoutKind.Sequential, Pack = 1, Size = 22)]
     internal unsafe struct LOCAL_MEMORY_STORAGE_ENUMERATOR
     {
-        internal byte*   CellPtr;
-        internal long    CellId;
-        internal int     CellEntryIndex;
-        internal ushort  CellType;
+        internal byte* CellPtr;
+        internal long CellId;
+        internal int CellEntryIndex;
+        internal ushort CellType;
         /* Members invisible to C# are omitted. */
     }
 
@@ -64,10 +60,10 @@ namespace Trinity.Storage
 
         internal unsafe CellInfo(LOCAL_MEMORY_STORAGE_ENUMERATOR* m_enumerator) : this()
         {
-            CellPtr        = m_enumerator->CellPtr;
-            CellId         = m_enumerator->CellId;
+            CellPtr = m_enumerator->CellPtr;
+            CellId = m_enumerator->CellId;
             CellEntryIndex = m_enumerator->CellEntryIndex;
-            CellType       = m_enumerator->CellType;
+            CellType = m_enumerator->CellType;
         }
 
     }
@@ -92,7 +88,7 @@ namespace Trinity.Storage
 
     internal unsafe class LocalMemoryStorageEnumerator : IEnumerator<CellInfo>
     {
-        LOCAL_MEMORY_STORAGE_ENUMERATOR *m_enumerator;
+        LOCAL_MEMORY_STORAGE_ENUMERATOR* m_enumerator;
 
         public unsafe LocalMemoryStorageEnumerator()
         {

@@ -2,11 +2,6 @@
 // Copyright (c) Microsoft. All rights reserved.
 // Licensed under the MIT license. See LICENSE.md file in the project root for full license information.
 //
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-
 namespace Trinity.Utilities
 {
     /// <summary>
@@ -61,8 +56,7 @@ namespace Trinity.Utilities
                     IntegerList[count] = IntegerList[count] * 10 + *p - 48;
                     if (p + 1 != q && !isNumber(*(p + 1)))
                         nFlag = false;
-                }
-                else
+                } else
                 {
                     if (p + 1 != q && isNumber(*(p + 1)))
                     {

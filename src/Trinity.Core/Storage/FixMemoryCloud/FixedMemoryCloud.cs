@@ -2,21 +2,16 @@
 // Copyright (c) Microsoft. All rights reserved.
 // Licensed under the MIT license. See LICENSE.md file in the project root for full license information.
 //
-using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
 using System.Net;
-using System.Threading;
+using System.Runtime.CompilerServices;
 using System.Threading.Tasks;
 
-using Trinity;
-using Trinity.Network.Messaging;
 using Trinity.Diagnostics;
-using System.Runtime.CompilerServices;
-using Trinity.Network;
-using Trinity.Utilities;
 using Trinity.Extension;
+using Trinity.Network;
+
 using static Trinity.Configuration.ConfigurationConstants;
 
 namespace Trinity.Storage
@@ -139,8 +134,7 @@ namespace Trinity.Storage
                     )
                 {
                     StorageTable[i] = Global.LocalStorage;
-                }
-                else
+                } else
                 {
                     StorageTable[i] = new RemoteStorage(cluster_config.Servers[i].Instances, TrinityConfig.ClientMaxConn, this, i, nonblocking);
                 }
@@ -153,8 +147,7 @@ namespace Trinity.Storage
                 int my_server_id = (cluster_config.RunningMode == RunningMode.Server) ? MyPartitionId : -1;
                 var storage = StorageTable.Where((_, idx) => idx != my_server_id).FirstOrDefault() as RemoteStorage;
                 CheckServerProtocolSignatures(storage);
-            }
-            else
+            } else
             {
                 ServerConnected += (_, rs_ev) => CheckServerProtocolSignatures(rs_ev.RemoteStorage);
             }

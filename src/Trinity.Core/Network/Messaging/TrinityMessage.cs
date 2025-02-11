@@ -3,10 +3,8 @@
 // Licensed under the MIT license. See LICENSE.md file in the project root for full license information.
 //
 using System;
-using Trinity;
+
 using Trinity.Core.Lib;
-using Trinity.Network;
-using Trinity.Network.Messaging;
 
 namespace Trinity.Network.Messaging
 {
@@ -140,8 +138,7 @@ namespace Trinity.Network.Messaging
             try
             {
                 return Memory.Compare(tm1.Buffer, tm2.Buffer, tm1.Size);
-            }
-            catch (Exception)
+            } catch (Exception)
             {
                 return false;
             }

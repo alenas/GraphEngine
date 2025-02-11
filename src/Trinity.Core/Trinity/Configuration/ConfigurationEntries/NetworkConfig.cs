@@ -1,9 +1,3 @@
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
 namespace Trinity.Configuration
 {
     /// <summary>
@@ -72,8 +66,8 @@ namespace Trinity.Configuration
         /// </summary>
         [ConfigSetting(Optional: true)]
         public bool Handshake { get { return CTrinityConfig.CHandshake(); } set { CTrinityConfig.CSetHandshake(value); } }
-        
-     
+
+
         [ConfigSetting(Optional: true)]
         public bool ClientDisableSendBuffer { get { return CTrinityConfig.CClientDisableSendBuffer(); } set { CTrinityConfig.CSetClientDisableSendBuffer(value); } }
         #endregion

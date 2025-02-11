@@ -3,16 +3,9 @@
 // Licensed under the MIT license. See LICENSE.md file in the project root for full license information.
 //
 using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Net;
-using Trinity;
-using Trinity.Network;
-using Trinity.Network.Messaging;
+
 using Trinity.Core.Lib;
-using System.IO;
-using Trinity.Configuration;
+using Trinity.Network.Messaging;
 
 namespace Trinity.Storage
 {

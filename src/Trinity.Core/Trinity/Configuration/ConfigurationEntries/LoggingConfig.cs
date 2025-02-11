@@ -2,12 +2,8 @@
 // Copyright (c) Microsoft. All rights reserved.
 // Licensed under the MIT license. See LICENSE.md file in the project root for full license information.
 //
-using System;
-using System.Collections.Generic;
 using System.IO;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+
 using Trinity.Diagnostics;
 using Trinity.Utilities;
 
@@ -20,7 +16,7 @@ namespace Trinity.Configuration
     {
         #region Singleton
         static LoggingConfig s_instance = new LoggingConfig();
-        private LoggingConfig() { CTrinityConfig.CLogSetEchoOnConsole(false);  LoggingLevel = c_DefaultLogLevel; }
+        private LoggingConfig() { CTrinityConfig.CLogSetEchoOnConsole(false); LoggingLevel = c_DefaultLogLevel; }
         /// <summary>
         /// Gets the configuration entry singleton instance.
         /// </summary>
@@ -31,12 +27,12 @@ namespace Trinity.Configuration
         #endregion
 
         #region Fields
-        internal const  LogLevel c_DefaultLogLevel  = LogLevel.Info;
-        internal const  bool     c_DefaultEchoOnConsole    = ConfigurationConstants.Values.DEFAULT_VALUE_TRUE;
-        private LogLevel         m_LogLevel         = c_DefaultLogLevel;
-        private string           m_LogDir           = ConfigurationConstants.Values.BLANK;
-        private bool?            m_EchoOnConsole    = ConfigurationConstants.Values.DEFAULT_VALUE_TRUE;
-        private bool             m_LogToFile        = ConfigurationConstants.Values.DEFAULT_VALUE_TRUE;
+        internal const LogLevel c_DefaultLogLevel = LogLevel.Info;
+        internal const bool c_DefaultEchoOnConsole = ConfigurationConstants.Values.DEFAULT_VALUE_TRUE;
+        private LogLevel m_LogLevel = c_DefaultLogLevel;
+        private string m_LogDir = ConfigurationConstants.Values.BLANK;
+        private bool? m_EchoOnConsole = ConfigurationConstants.Values.DEFAULT_VALUE_TRUE;
+        private bool m_LogToFile = ConfigurationConstants.Values.DEFAULT_VALUE_TRUE;
         #endregion
 
         #region Private helpers

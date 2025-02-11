@@ -3,10 +3,8 @@
 // Licensed under the MIT license. See LICENSE.md file in the project root for full license information.
 //
 using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 using System.IO;
+
 using Trinity.Diagnostics;
 
 namespace Trinity.Utilities
@@ -42,9 +40,9 @@ namespace Trinity.Utilities
             Row null_row,
             GetChannelFunc<Row> get_channel,
             Comparison<Row> comparison,
-            ReadRowFunc<Row> read_row, 
+            ReadRowFunc<Row> read_row,
             WriteRowFunc<Row> write_row,
-            IsNonNullRowFunc<Row> not_null, 
+            IsNonNullRowFunc<Row> not_null,
             RowNotEqualFunc<Row> not_equal
             )
         {
@@ -91,8 +89,7 @@ namespace Trinity.Utilities
             if (sort_order == SortOrder.Increase)
             {
                 MinHeap.BuildHeap<Row>(heap, compare);
-            }
-            else
+            } else
             {
                 MaxHeap.BuildHeap<Row>(heap, compare);
             }
@@ -114,13 +111,11 @@ namespace Trinity.Utilities
                     if (sort_order == SortOrder.Increase)
                     {
                         MinHeap.Adjust<Row>(heap, 0, compare);
-                    }
-                    else
+                    } else
                     {
                         MaxHeap.Adjust<Row>(heap, 0, compare);
                     }
-                }
-                else
+                } else
                 {
                     break;
                 }

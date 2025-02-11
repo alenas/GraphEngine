@@ -2,18 +2,12 @@
 // Copyright (c) Microsoft. All rights reserved.
 // Licensed under the MIT license. See LICENSE.md file in the project root for full license information.
 //
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
 namespace Trinity.Storage
 {
     /// <summary>
     /// Represents a collection of system capacity profiles.
     /// </summary>
-    public enum StorageCapacityProfile: int
+    public enum StorageCapacityProfile : int
     {
         /// <summary>
         /// Maximum 256 million cells supported by each LocalStorage instance.

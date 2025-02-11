@@ -3,15 +3,10 @@
 // Licensed under the MIT license. See LICENSE.md file in the project root for full license information.
 //
 using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 using System.Diagnostics;
 using System.Threading;
 
-using Trinity;
 using Trinity.Win32;
-using System.Globalization;
 
 namespace Trinity.Diagnostics
 {
@@ -107,8 +102,7 @@ namespace Trinity.Diagnostics
                 Trinity.Win32.NativeAPI.PROCESS_MEMORY_COUNTERS counter = new Trinity.Win32.NativeAPI.PROCESS_MEMORY_COUNTERS();
                 NativeAPI.GetProcessMemoryInfo(NativeAPI.GetCurrentProcess(), out counter, sizeof(Trinity.Win32.NativeAPI.PROCESS_MEMORY_COUNTERS));
                 return counter.WorkingSetSize.ToInt64();
-            }
-            else
+            } else
             {
                 throw new NotImplementedException();
             }
@@ -158,8 +152,7 @@ namespace Trinity.Diagnostics
                 mf();
                 sw.Stop();
                 Console.WriteLine(name + "; Time = " + sw.ElapsedMilliseconds);
-            }
-            else
+            } else
             {
                 mf();
             }

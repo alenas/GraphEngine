@@ -164,7 +164,7 @@ namespace t_Namespace.InvertedIndex
             {
                 //!!!!! Be aware of this line
                 byte[] buffer = new byte[(int)fs.Length];
-                fs.Read(buffer, 0, buffer.Length);
+                fs.ReadExactly(buffer, 0, buffer.Length);
                 int count = buffer.Length / sizeof(IndexItem);
                 IndexItem[] indexItems = new IndexItem[count];
                 fixed (byte* bp = buffer)

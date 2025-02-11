@@ -4,21 +4,8 @@
 //
 using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.IO;
-using Trinity;
-using System.Threading;
-using System.Threading.Tasks;
-using Trinity.Network;
-using Trinity.Core.Lib;
-using Trinity.Win32;
-using System.Runtime.InteropServices;
-using Trinity.Diagnostics;
-using Trinity.Network.Client;
-using System.Net;
-using Trinity.Network.Messaging;
 using System.Globalization;
+using System.IO;
 
 namespace Trinity.Utilities
 {

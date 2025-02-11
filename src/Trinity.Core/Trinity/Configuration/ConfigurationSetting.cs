@@ -1,8 +1,4 @@
 using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Trinity.Configuration
 {
@@ -22,32 +18,25 @@ namespace Trinity.Configuration
             if (type.IsEnum)
             {
                 return Enum.Parse(type, Literal);
-            }
-            else if (type == typeof(Int32))
+            } else if (type == typeof(Int32))
             {
                 return Int32.Parse(Literal);
-            }
-            else if (type == typeof(Int64))
+            } else if (type == typeof(Int64))
             {
                 return Int64.Parse(Literal);
-            }
-            else if (type == typeof(string))
+            } else if (type == typeof(string))
             {
                 return Literal;
-            }
-            else if (type == typeof(bool))
+            } else if (type == typeof(bool))
             {
                 return bool.Parse(Literal);
-            }
-            else if (type == typeof(float))
+            } else if (type == typeof(float))
             {
                 return float.Parse(Literal);
-            }
-            else if (type == typeof(double))
+            } else if (type == typeof(double))
             {
                 return double.Parse(Literal);
-            }
-            else
+            } else
             {
                 throw new ArgumentException(String.Format("Unsupported configuration value type: {0}", type.ToString()), "type");
             }

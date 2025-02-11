@@ -2,12 +2,14 @@
 
   <PropertyGroup>
     <OutputType>Exe</OutputType>
-    <TargetFrameworks>net8.0</TargetFrameworks>
+    <TargetFrameworks>net9.0</TargetFrameworks>
     <RootNamespace>GraphEngine.Test</RootNamespace>
   </PropertyGroup>
 
   <ItemGroup>
     <PackageReference Include="GraphEngine.Core" Version="$(DOTNET_PACKAGE_VERSION)" />
+    <PackageReference Include="Microsoft.Extensions.ObjectPool" Version="9.0.1" />
+    <PackageReference Include="Newtonsoft.Json" Version="13.0.3" />
   </ItemGroup>
 
   <ItemGroup>

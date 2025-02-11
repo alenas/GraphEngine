@@ -3,11 +3,9 @@
 // Licensed under the MIT license. See LICENSE.md file in the project root for full license information.
 //
 using System;
-using System.Collections.Generic;
 using System.Globalization;
 using System.Linq;
 using System.Text;
-using System.Threading;
 
 namespace Trinity.Utilities
 {
@@ -466,8 +464,7 @@ namespace Trinity.Utilities
                 if (trimChars.Contains(sb[index]))
                 {
                     sb.Remove(index, 1);
-                }
-                else
+                } else
                     break;
             }
             return this;
@@ -480,8 +477,7 @@ namespace Trinity.Utilities
                 if (trimChars.Contains(sb[0]))
                 {
                     sb.Remove(0, 1);
-                }
-                else
+                } else
                     break;
             }
             return this;

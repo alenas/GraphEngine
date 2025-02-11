@@ -3,22 +3,14 @@
 // Licensed under the MIT license. See LICENSE.md file in the project root for full license information.
 //
 using System;
-using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.IO;
-using System.Net;
 using System.Threading;
 using System.Threading.Tasks;
-using System.Diagnostics;
 
-using Trinity;
 using Trinity.Core.Lib;
-using Trinity.Network.Messaging;
-using Trinity.Network;
-using Trinity.Utilities;
-using Trinity.Diagnostics;
 using Trinity.Daemon;
+using Trinity.Diagnostics;
+using Trinity.Network.Messaging;
 
 namespace Trinity.Storage
 {
@@ -89,8 +81,7 @@ namespace Trinity.Storage
                         });
                     Dispose();
                     Thread.MemoryBarrier();
-                }
-                catch (Exception ex)
+                } catch (Exception ex)
                 {
                     Log.WriteLine(LogLevel.Error, "Errors occurred during shutdown the Trinity servers.");
                     Log.WriteLine(LogLevel.Error, ex.ToString());

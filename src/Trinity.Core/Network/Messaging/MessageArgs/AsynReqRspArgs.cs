@@ -3,13 +3,10 @@
 // Licensed under the MIT license. See LICENSE.md file in the project root for full license information.
 //
 using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
+
 using Trinity.Core.Lib;
-using Trinity.Diagnostics;
 
 namespace Trinity.Network.Messaging
 {
@@ -49,9 +46,9 @@ namespace Trinity.Network.Messaging
         internal AsynReqRspArgs(AsyncReqRspHandler handler, byte* buf, int offset, int len)
         {
             RequestHandler = handler;
-            Offset         = offset;
-            Size           = len;
-            Buffer         = buf;
+            Offset = offset;
+            Size = len;
+            Buffer = buf;
         }
 
         internal TrinityErrorCode AsyncProcessMessage()
@@ -75,12 +72,10 @@ namespace Trinity.Network.Messaging
             try
             {
                 RequestHandler(this);
-            }
-            catch (Exception e)
+            } catch (Exception e)
             {
                 CommunicationInstance._RaiseUnhandledExceptionEvents(this, new MessagingUnhandledExceptionEventArgs(this, e));
-            }
-            finally
+            } finally
             {
                 Memory.free(Buffer);
             }

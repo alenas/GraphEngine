@@ -4,18 +4,14 @@
 //
 using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.IO;
-using System.Threading;
 using System.Diagnostics;
-using System.Runtime.CompilerServices;
+using System.Linq;
 using System.Runtime.InteropServices;
-using Trinity;
-using Trinity.Utilities;
+using System.Threading;
+
+using Trinity.Configuration;
 using Trinity.Core.Lib;
 using Trinity.Daemon;
-using Trinity.Configuration;
 
 namespace Trinity.Diagnostics
 {
@@ -27,17 +23,17 @@ namespace Trinity.Diagnostics
         /// <summary>
         /// No message is logged
         /// </summary>
-        Off     = 0,
+        Off = 0,
 
         /// <summary>
         /// Only unrecoverable system errors are logged
         /// </summary>
-        Fatal   = 1,
+        Fatal = 1,
 
         /// <summary>
         /// Unrecoverable system errors and application logLevel errors are logged
         /// </summary>
-        Error   = 2,
+        Error = 2,
 
         /// <summary>
         /// Fatal system error, application error and application warning are logged
@@ -47,12 +43,12 @@ namespace Trinity.Diagnostics
         /// <summary>
         /// All errors, warnings and notable application messages are logged
         /// </summary>
-        Info    = 4,
+        Info = 4,
 
         /// <summary>
         /// All errors, warnings, application messages and debugging messages are logged
         /// </summary>
-        Debug   = 5,
+        Debug = 5,
 
         /// <summary>
         /// All messages are logged
@@ -68,12 +64,12 @@ namespace Trinity.Diagnostics
         /// <summary>
         /// The log message string.
         /// </summary>
-        public string   logMessage;
+        public string logMessage;
         /// <summary>
         /// The Unix timestamp of the log.
         /// Note, this is not compatible with DateTime.FromBinary(long).
         /// </summary>
-        public long     logTimestamp;
+        public long logTimestamp;
         /// <summary>
         /// The log level.
         /// </summary>
@@ -92,12 +88,12 @@ namespace Trinity.Diagnostics
     {
         #region Fields
         private static IFormatProvider s_InternalFormatProvider;
-        private const  int             c_LogEntryCollectorIdleInterval = 3000;
-        private const  int             c_LogEntryCollectorBusyInterval = 50;
-        private static object          s_init_lock = new object();
-        private static bool            s_initialized = false;
-        private static bool            s_logtofile = false;
-        private static BackgroundTask  s_bgtask;
+        private const int c_LogEntryCollectorIdleInterval = 3000;
+        private const int c_LogEntryCollectorBusyInterval = 50;
+        private static object s_init_lock = new object();
+        private static bool s_initialized = false;
+        private static bool s_logtofile = false;
+        private static BackgroundTask s_bgtask;
         private static readonly char[] s_linebreaks = "\r\n".ToCharArray();
         #endregion
 
@@ -138,8 +134,8 @@ namespace Trinity.Diagnostics
         [StructLayout(LayoutKind.Sequential)]
         private struct LOG_ENTRY_PINVOKE
         {
-            public IntPtr   logMessage;
-            public long     logTimestamp;
+            public IntPtr logMessage;
+            public long logTimestamp;
             public LogLevel logLevel;
         }
 
@@ -151,9 +147,9 @@ namespace Trinity.Diagnostics
             if (TrinityErrorCode.E_SUCCESS == eResult)
             {
                 Debug.Assert(entry_count < Int32.MaxValue, "CollectLogEntries: too many log entries");
-                LOG_ENTRY_PINVOKE *p       = (LOG_ENTRY_PINVOKE*)p_entry;
-                LOG_ENTRY_PINVOKE *pend    = p + entry_count;
-                List<LOG_ENTRY>    entries = new List<LOG_ENTRY>((int)entry_count);
+                LOG_ENTRY_PINVOKE* p = (LOG_ENTRY_PINVOKE*)p_entry;
+                LOG_ENTRY_PINVOKE* pend = p + entry_count;
+                List<LOG_ENTRY> entries = new List<LOG_ENTRY>((int)entry_count);
 
                 while (p != pend)
                 {

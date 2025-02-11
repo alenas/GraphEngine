@@ -4,24 +4,20 @@
 //
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
+using System.Globalization;
 using System.Linq;
-using System.Text;
 using System.Net;
+using System.Runtime.InteropServices;
 using System.Threading;
 
-using Trinity;
-using Trinity.Network;
-using Trinity.Network.Sockets;
 using Trinity.Diagnostics;
-using Trinity.Network.Http;
-using Trinity.Storage;
-using System.Runtime.CompilerServices;
-using System.Globalization;
-using Trinity.Network.Messaging;
-using System.Diagnostics;
-using Trinity.Utilities;
 using Trinity.Extension;
-using System.Runtime.InteropServices;
+using Trinity.Network.Http;
+using Trinity.Network.Messaging;
+using Trinity.Network.Sockets;
+using Trinity.Storage;
+using Trinity.Utilities;
 
 namespace Trinity.Network
 {
@@ -173,8 +169,7 @@ namespace Trinity.Network
 
                 m_HttpServer.Listen();
                 Log.WriteLine(LogLevel.Info, "HTTP server listening on port {0}", http_port);
-            }
-            catch
+            } catch
             {
                 Log.WriteLine(LogLevel.Error, "Failed to start HTTP server. HTTP endpoints are disabled.");
             }
@@ -189,8 +184,7 @@ namespace Trinity.Network
                 m_HttpServer.Dispose();
                 m_HttpServer = null;
                 Log.WriteLine(LogLevel.Info, "HTTP server stopped");
-            }
-            catch
+            } catch
             {
                 Log.WriteLine(LogLevel.Error, "Failed to stop HTTP server.");
             }
@@ -199,7 +193,7 @@ namespace Trinity.Network
         /// <summary>
         /// The primary http handler that routes the request to the proper handler.
         /// </summary>
-        private void _HttpHandler(HttpListenerContext context)
+        private async void _HttpHandler(HttpListenerContext context)
         {
             //  Record the context into the thread-static storage
             s_current_http_ctx = context;
@@ -223,7 +217,7 @@ namespace Trinity.Network
             if (UInt32.TryParse(endpoint_name, out instance_id))
             {
                 //  In this case, we relay this message to the desired instance. 
-                m_HttpServer.RelayRequest((int)instance_id, context);
+                await m_HttpServer.RelayRequest((int)instance_id, context);
                 goto cleanup;
             }
 
@@ -238,8 +232,7 @@ namespace Trinity.Network
                 if (url.Length < 2 || url[1] == '?' || separator_idx == -1)
                 {
                     module.GetRootHttpHandler()(context);
-                }
-                else
+                } else
                 {
                     endpoint_name = url.Substring(1, separator_idx - 1);
                     module.GetHttpRequestDispatcher()(context, endpoint_name, url.Substring(separator_idx + 1));
@@ -251,7 +244,7 @@ namespace Trinity.Network
             //  Otherwise, this request should be dispatched by
             DispatchHttpRequest(context, endpoint_name, url.Substring(separator_idx + 1));
 
-            cleanup:
+        cleanup:
             //  Erase the context as it is not being processed anymore.
             s_current_http_ctx = null;
         }
@@ -301,8 +294,7 @@ namespace Trinity.Network
                     m_started = true;
                     Log.WriteLine("{0} {1} is successfully started.", RunningMode, memory_cloud.MyInstanceId);
                     _RaiseStartedEvents();
-                }
-                catch (Exception ex)
+                } catch (Exception ex)
                 {
                     Log.WriteLine(LogLevel.Error, "CommunicationInstance: " + ex.ToString());
                 }
@@ -341,8 +333,7 @@ namespace Trinity.Network
 
                     m_started = false;
                     Log.WriteLine("{0} {1} is successfully stopped.", RunningMode, id);
-                }
-                catch (Exception ex)
+                } catch (Exception ex)
                 {
                     Log.WriteLine(LogLevel.Error, "CommunicationInstance: " + ex.ToString());
                 }
@@ -360,7 +351,7 @@ namespace Trinity.Network
                 m_dispatcher = value;
                 GC.SuppressFinalize(m_dispatcher);
                 var pfn_dispatch = Marshal.GetFunctionPointerForDelegate(m_dispatcher);
-                for (ushort i = 0; i<(ushort)TrinityMessageType.MESSAGE_TYPE_MAX; ++i)
+                for (ushort i = 0; i < (ushort)TrinityMessageType.MESSAGE_TYPE_MAX; ++i)
                 {
                     Global.RegisterMessageHandler(i, pfn_dispatch);
                 }
@@ -483,13 +474,11 @@ namespace Trinity.Network
                 if (exception_event_handler != null)
                 {
                     exception_event_handler(reqArgs, e);
-                }
-                else
+                } else
                 {
                     _LogMessageReqArgsAndException(reqArgs, e);
                 }
-            }
-            catch (Exception exception)
+            } catch (Exception exception)
             {
                 //The unhandled exception event handler throws exception.
                 //We first log the original exception down, and then explain

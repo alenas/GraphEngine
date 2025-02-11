@@ -3,14 +3,11 @@
 // Licensed under the MIT license. See LICENSE.md file in the project root for full license information.
 //
 using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 using System.Threading;
 
 namespace Trinity.Utilities.CodeTempl
 {
-    internal class DisposalClass: IDisposable
+    internal class DisposalClass : IDisposable
     {
         private volatile bool disposed = false;
         private object disposal_lock = new object();

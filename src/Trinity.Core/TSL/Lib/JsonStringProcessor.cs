@@ -5,10 +5,8 @@
 using System;
 using System.Collections.Generic;
 using System.Globalization;
-using System.Linq;
 using System.Runtime.CompilerServices;
 using System.Text;
-using System.Threading.Tasks;
 
 namespace Trinity.TSL.Lib
 {
@@ -66,11 +64,11 @@ namespace Trinity.TSL.Lib
 
             ensure_string_builder();
 
-            bool    need_unescape  = false;
-            int     utf_sequence   = 0;
-            ushort  utf_value      = 0;
-            char    quote_char     = '\0';
-            int     begin          = 0;
+            bool need_unescape = false;
+            int utf_sequence = 0;
+            ushort utf_value = 0;
+            char quote_char = '\0';
+            int begin = 0;
 
             switch (json[0])
             {
@@ -82,14 +80,14 @@ namespace Trinity.TSL.Lib
                     break;
             }
 
-            if(quote_char != '\0')
+            if (quote_char != '\0')
             {
                 begin = 1;
             }
 
             for (int idx = begin, end = json.Length; idx < end; ++idx)
             {
-                char ch  = json[idx];
+                char ch = json[idx];
 
                 if (utf_sequence > 0)
                 {
@@ -100,8 +98,7 @@ namespace Trinity.TSL.Lib
                     --utf_sequence;
                     if (utf_sequence == 0)
                         s_stringBuilder.Append((char)utf_value);
-                }
-                else if (need_unescape)
+                } else if (need_unescape)
                 {
                     switch (ch)
                     {
@@ -114,7 +111,7 @@ namespace Trinity.TSL.Lib
                         case 'u':
                             {
                                 utf_sequence = 4;
-                                utf_value    = 0;
+                                utf_value = 0;
                                 break;
                             }
 
@@ -123,13 +120,11 @@ namespace Trinity.TSL.Lib
                             break;
                     }
                     need_unescape = false;
-                }
-                else if (ch == '\\')
+                } else if (ch == '\\')
                 {
                     need_unescape = true;
                     continue;
-                }
-                else
+                } else
                 {
                     if (ch == quote_char)
                         break;
@@ -178,8 +173,7 @@ namespace Trinity.TSL.Lib
                         {
                             s_stringBuilder.Append("\\u");
                             s_stringBuilder.Append(((int)ch).ToString("x4", CultureInfo.InvariantCulture));
-                        }
-                        else
+                        } else
                         {
                             s_stringBuilder.Append(ch);
                         }

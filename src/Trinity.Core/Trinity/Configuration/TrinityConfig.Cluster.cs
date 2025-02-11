@@ -4,11 +4,8 @@
 //
 using System;
 using System.Collections.Generic;
-using System.Collections.ObjectModel;
-using System.IO;
 using System.Net;
-using System.Xml.Linq;
-using System.Linq;
+
 using Trinity.Configuration;
 using Trinity.Network;
 
@@ -27,7 +24,7 @@ namespace Trinity
         #region Fields
         private static ClusterConfig s_current_cluster_config = new ClusterConfig();
         private static Dictionary<string, ClusterConfig> s_clusterConfigurations = new Dictionary<string, ClusterConfig>();
-        
+
         internal static int BackgroundSendingInterval = ConfigurationConstants.Values.DEFAULT_BACKGROUND_SENDING_INTERVAL;
         internal static int HeartbeatInterval = ConfigurationConstants.Values.DEFAULT_HEARTBEAT_INTERVAL;
         internal static int MaxSocketReconnectNum = ConfigurationConstants.Values.DEFAULT_MAXSOCKET_RECONNECTNUM;

@@ -5,25 +5,40 @@ Function Init-Configuration {
     $Global:TRINITY_OUTPUT_DIR            = "$REPO_ROOT\bin"
     $Global:TRINITY_TEST_DIR              = "$REPO_ROOT\tests"
     $Global:TOOLS_DIR                     = "$REPO_ROOT\tools"
-    $Global:NUGET_EXE                     = "$REPO_ROOT\tools\NuGet.exe"
-    $Global:CMAKE_PKG                     = "$REPO_ROOT\tools\cmake.zip"
-    $Global:CMAKE_EXE                     = "$REPO_ROOT\tools\cmake-3.23.2-windows-x86_64\bin\cmake.exe"
+    $Global:NUGET_EXE                     = "nuget.exe"
+    # CMAKE is included with VS 2022
+    $Global:CMAKE_EXE                     = "cmake.exe"
 
     $global:ProgressPreference = "SilentlyContinue"
-    if (![System.IO.File]::Exists($NUGET_EXE)){
-        Write-Output "Downloading NuGet package manager."
-            [Net.ServicePointManager]::SecurityProtocol = [Net.SecurityProtocolType]::Tls12
-              Invoke-WebRequest -Uri https://dist.nuget.org/win-x86-commandline/latest/nuget.exe -OutFile $NUGET_EXE
+
+    # Check NuGet
+    $command = Get-Command $NUGET_EXE -ErrorAction SilentlyContinue
+    if ($command) {
+        $Global:NUGET_EXE = $command.Source
+        Write-Output "Nuget found at: $($NUGET_EXE)"
+    } else {
+        Write-Output "Installing NuGet package manager."
+        Invoke-Expression "winget install Microsoft.NuGet"
+	Write-Output "NuGet installed - restart build..."
+	exit 1
     }
 
-    if (![System.IO.File]::Exists($CMAKE_PKG)){
-        Write-Output "Downloading CMake."
-            [Net.ServicePointManager]::SecurityProtocol = [Net.SecurityProtocolType]::Tls12
-              Invoke-WebRequest -Uri https://github.com/Kitware/CMake/releases/download/v3.23.2/cmake-3.23.2-windows-x86_64.zip -OutFile $CMAKE_PKG
-    }
-
-    if (![System.IO.File]::Exists($CMAKE_EXE)){
-        Expand-Archive $CMAKE_PKG -DestinationPath $TOOLS_DIR
+    # Check CMAKE
+    $command = Get-Command CMAKE_EXE -ErrorAction SilentlyContinue
+    if ($command) {
+        $Global:CMAKE_EXE = $command.Source
+        Write-Output "CMake found at: $($CMAKE_EXE)"
+    } else {
+        # default VS path
+        $command = Get-Command "C:\Program Files\Microsoft Visual Studio\2022\Community\Common7\IDE\CommonExtensions\Microsoft\CMake\CMake\bin\$($CMAKE_EXE)" -ErrorAction SilentlyContinue
+        if ($command) {
+            $Global:CMAKE_EXE = $command.Source
+            Write-Output "CMake found at: $($CMAKE_EXE)"
+        } else {
+            Write-Output "CMake is not on path!"
+            Write-Output "Use Developer PowerShell to execute build.ps1 or add cmake to path."
+            exit 1
+        }
     }
 
     New-Item -Path "$TRINITY_OUTPUT_DIR" -ItemType Directory -ErrorAction SilentlyContinue

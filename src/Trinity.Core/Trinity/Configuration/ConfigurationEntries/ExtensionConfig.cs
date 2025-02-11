@@ -4,12 +4,9 @@
 //
 using System;
 using System.Collections.Generic;
-using System.IO;
 using System.Linq;
 using System.Reflection;
-using System.Text;
-using System.Threading.Tasks;
-using Trinity.Diagnostics;
+
 using Trinity.Extension;
 using Trinity.Utilities;
 
@@ -61,8 +58,7 @@ namespace Trinity.Configuration
                 {
                     rank[d.Type] = d.PriorityAttr.Priority;
                 }
-            }
-            else
+            } else
             {
                 rank = m_priority_dict;
             }
@@ -70,8 +66,7 @@ namespace Trinity.Configuration
             List<ExtensionPriority> priorities = Priority;
             foreach (var p in priorities)
             {
-                try { rank[AssemblyUtility.GetType(p.Name)] = p.Priority; }
-                catch { }
+                try { rank[AssemblyUtility.GetType(p.Name)] = p.Priority; } catch { }
             }
 
             m_priority_dict = rank;

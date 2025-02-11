@@ -6,7 +6,6 @@ using System;
 using System.Collections.Generic;
 using System.Globalization;
 using System.Linq;
-using System.Text;
 
 namespace Trinity.Utilities
 {
@@ -53,15 +52,13 @@ namespace Trinity.Utilities
                 if (nextIndex < 0)
                 {
                     list.Add(command.Substring(index + 1));
-                }
-                else
+                } else
                 {
                     list.Add(command.Substring(index + 1, nextIndex - index - 1));
                     list.AddRange(CmdSplit(command.Substring(nextIndex + 1)));
                 }
                 return list.ToArray();
-            }
-            else
+            } else
             {
                 return command.Trim().Split(WhiteSpaceArray, StringSplitOptions.RemoveEmptyEntries);
             }
@@ -84,8 +81,7 @@ namespace Trinity.Utilities
                 {
                     if (command[i].Substring(2) == descriptor.LongOption)
                         return i;
-                }
-                else if (command[i].StartsWith("-", StringComparison.Ordinal))
+                } else if (command[i].StartsWith("-", StringComparison.Ordinal))
                 {
                     if (command[i].Substring(1) == descriptor.ShortOption)
                         return i;
@@ -477,8 +473,7 @@ namespace Trinity.Utilities
                 if (double.TryParse(s, out dValue))
                 {
                     return (long)(Unit * dValue);
-                }
-                else return null;
+                } else return null;
             }
             long lValue;
             if (long.TryParse(s, out lValue))

@@ -2,13 +2,9 @@
 // Copyright (c) Microsoft. All rights reserved.
 // Licensed under the MIT license. See LICENSE.md file in the project root for full license information.
 //
-using System;
 using System.Collections.Generic;
-using System.Linq;
 using System.Net;
-using System.Text;
-using System.Threading.Tasks;
-using Trinity.Configuration;
+
 using Trinity.Utilities;
 
 namespace Trinity.Network
@@ -92,7 +88,7 @@ namespace Trinity.Network
         /// <returns>If the availability group contains the specified server instance, returns true; otherwise, returns false.</returns>
         public bool HasLoopBackEndpoint(int port)
         {
-            foreach(var instance in Instances)
+            foreach (var instance in Instances)
             {
                 var ep = instance.EndPoint;
                 if (IPAddress.IsLoopback(ep.Address) && ep.Port == port)

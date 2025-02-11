@@ -5,8 +5,7 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
+
 using Trinity.Diagnostics;
 
 namespace Trinity.Core.Lib
@@ -20,8 +19,8 @@ namespace Trinity.Core.Lib
             get
             {
                 List<TKey> keys = new List<TKey>();
-                foreach ( Dictionary<TKey, TValue> dict in DictionaryArray )
-                    keys.AddRange( dict.Keys );
+                foreach (Dictionary<TKey, TValue> dict in DictionaryArray)
+                    keys.AddRange(dict.Keys);
                 return keys;
             }
         }
@@ -47,7 +46,7 @@ namespace Trinity.Core.Lib
 
         public void Add(TKey key, TValue value)
         {
-            DictionaryArray[ (key.GetHashCode() & 0x7fffffff) % m].Add(key, value);
+            DictionaryArray[(key.GetHashCode() & 0x7fffffff) % m].Add(key, value);
         }
         public bool Remove(TKey key)
         {
