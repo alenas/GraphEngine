@@ -19,7 +19,7 @@ namespace FanoutSearch
         #region Method info objects
         private static readonly MemberInfo         s_icell_accessor_cell_id_member = typeof(ICell).GetMember("CellId").First();
         private static readonly MethodInfo         s_long_ienumerable_contains     = typeof(Enumerable).GetMethods(BindingFlags.Public | BindingFlags.Static).First(_ => _.Name == "Contains" && _.GetParameters().Count() == 2).MakeGenericMethod(typeof(long));
-        private static readonly MethodInfo         s_string_contains               = typeof(string).GetMethod("Contains");
+        private static readonly MethodInfo         s_string_contains               = typeof(String).GetMethod("Contains", new Type[] { typeof(String) });
         private static readonly MethodInfo         s_icell_has                     = typeof(Verbs).GetMethod("has", new Type[] { typeof(ICell), typeof(string) });
         private static readonly MethodInfo         s_icell_has_value               = typeof(Verbs).GetMethod("has", new Type[] { typeof(ICell), typeof(string), typeof(string) });
         private static readonly MethodInfo         s_icell_get                     = typeof(Verbs).GetMethod("get", new Type[] { typeof(ICell), typeof(string) });
